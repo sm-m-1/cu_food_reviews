@@ -9,6 +9,7 @@ class Location(models.Model):
     c_id = models.BigIntegerField(null=True, unique=True)
     slug = models.SlugField(max_length=200, null=True)
     eatery_name = models.CharField(null=True, max_length=200)
+    eatery_name_short = models.CharField(null=True, max_length=100)
     about = models.TextField(null=True)
     about_short = models.TextField(null=True)
     cornell_dining = models.BooleanField(default=True)
