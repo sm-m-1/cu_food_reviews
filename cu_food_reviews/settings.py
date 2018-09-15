@@ -37,6 +37,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
+    'cu_food_reviews',
+    'meal_events',
+    'meal_categories',
+    'locations',
+    'meal_photos',
+    'meal_reviews',
+    'operating_hours',
+    'meal_items',
 ]
 
 MIDDLEWARE = [
