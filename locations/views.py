@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import ListView
 from locations.models import Location
+from meal_categories.models import MealCategory
 from operating_hours.models import OperatingHour
 from meal_events.models import MealEvent
 from meal_items.models import MealItem
@@ -21,12 +22,16 @@ class LocationList(ListView):
         for location in object_list_old:
             info = {}
             info['location'] = location
-            info['meal_event'] = MealEvent.objects.filter(operating_hour__date=date, operating_hour__location=location)
-            info['meal_category'] = MealEvent.objects.filter()
+            events = MealEvent.objects.filter(operating_hour__date=date, operating_hour__location=location)
+            for event in events:
+                menu = []
+                categories = MealCategory.objects.filter(meal_event=event)
+                print("categories: ", categories)
+
             # info['meal_items'] = MealItem.objects.filter(meal_category__meal_event__operating=)
             object_list_new.append(info)
         context['object_list'] = object_list_new
-        print("context: ", context)
+        # print("context: ", context)
         return context
 
     def get_queryset(self):

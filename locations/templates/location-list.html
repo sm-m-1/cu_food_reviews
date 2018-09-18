@@ -11,13 +11,19 @@
         {% for location in object_list %}
         <li>{{ location.location.eatery_name }}</li>
             <ol>
-
             {% for item in location.meal_event %}
                 <li>{{ item.description }}</li>
                 <li>{{ item.start_time }}</li>
                 <li>{{ item.end_time }}</li>
             {% endfor %}
             </ol>
+{#            <h2>Meal Categories</h2>#}
+{#            <ol>#}
+{#            {% for meal_category in location.meal_category %}#}
+{#                <li>{{ meal_category.name }}</li>#}
+{#            {% endfor %}#}
+{#            </ol>#}
+
 
 {#        <li>{{ location.operatinghour_set.all }}</li>#}
         {% endfor %}
