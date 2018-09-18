@@ -22,11 +22,8 @@ class LocationList(ListView):
         for location in object_list_old:
             info = {}
             info['location'] = location
-            events = MealEvent.objects.filter(operating_hour__date=date, operating_hour__location=location)
-            for event in events:
-                menu = []
-                categories = MealCategory.objects.filter(meal_event=event)
-                print("categories: ", categories)
+            info['meal_event'] = MealEvent.objects.filter(operating_hour__date=date, operating_hour__location=location)
+            info['meal_category'] = MealEvent.objects.filter()
 
             # info['meal_items'] = MealItem.objects.filter(meal_category__meal_event__operating=)
             object_list_new.append(info)
