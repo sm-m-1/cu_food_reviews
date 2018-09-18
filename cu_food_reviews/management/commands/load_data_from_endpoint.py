@@ -55,9 +55,11 @@ def create_dining_item(item):
 
 
 def create_operating_hour(date, location):
-    object = OperatingHour.objects.get_or_create(date=date)
+    object = OperatingHour.objects.get_or_create(
+        date=date,
+        location=location
+    )
     operating_hour = object[0]
-    operating_hour.location.add(location)
     return operating_hour
 
 

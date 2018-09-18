@@ -20,6 +20,6 @@ from locations.views import LocationList
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', LocationList.as_view(), name='location_list'),
-    path('', LocationList.as_view(), name='location_list'),
+    # path('', LocationList.as_view(), name='location_list'),
+    path('home/<date>/', LocationList.as_view(), name='location_list'),
 ]

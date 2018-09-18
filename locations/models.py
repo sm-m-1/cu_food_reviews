@@ -3,6 +3,7 @@ from django.db import models
 # Create your models here.
 
 from django.db import models
+# from meal_items.models import MealItem
 
 
 class Location(models.Model):
@@ -26,6 +27,9 @@ class Location(models.Model):
     latitude = models.FloatField(null=True)
     longitude = models.FloatField(null=True)
     location_name = models.CharField(null=True, max_length=200)
+
+    # def get_menus(self):
+    #     return MealItem.objects.all()
 
 
 
