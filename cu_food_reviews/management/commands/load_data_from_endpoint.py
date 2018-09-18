@@ -14,6 +14,53 @@ from operating_hours.models import OperatingHour
 API_ENDPOINT_URL = "https://now.dining.cornell.edu/api/1.0/dining/eateries.json"
 
 
+def create_meal_event(event, operating_hour_id):
+    object = MealEvent.objects.get_or_create(
+        description=event.get('descr'),
+        start_timestamp=event.get('startTimestamp'),
+        end_timestamp=event.get('endTimestamp'),
+        start_time=event.get('start'),
+        end_time=event.get('end'),
+        operating_hour_id=operating_hour_id
+    )
+    return object[0]
+
+
+def create_meal_category(menu, meal_event_id):
+    object = MealCategory.objects.get_or_create(name=menu.get('category'))
+    meal_category = object[0]
+    meal_category.meal_event_id = meal_event_id
+    meal_category.save()
+    return object[0]
+
+
+def create_meal_item(item, meal_category):
+    object = MealItem.objects.get_or_create(name=item.get('item'))
+    meal_item = object[0]
+    meal_item.is_healthy = item.get('healthy')
+    meal_item.sort_index = item.get('sortIdx')
+    meal_item.save()
+    meal_item.meal_category.add(meal_category)
+    return item
+
+
+def create_dining_item(item):
+    object = MealItem.objects.get_or_create(name=item.get('item'))
+    meal_item = object[0]
+    meal_item.is_healthy = item.get('healthy')
+    meal_item.sort_index = item.get('sortIdx')
+    meal_item.description = item.get('descr')
+    meal_item.save()
+    return item
+
+
+def create_operating_hour(date, location):
+    object = OperatingHour.objects.get_or_create(date=date)
+    operating_hour = object[0]
+    operating_hour.location.add(location)
+    return operating_hour
+
+
 class Command(BaseCommand):
     help = 'Closes the specified poll for voting'
 
@@ -30,9 +77,20 @@ class Command(BaseCommand):
             operating_hours = location.get('operatingHours')
             for item in operating_hours:
                 date = item.get('date')
-                create_operating_hour(date, created_location)
+                events = item.get('events')
+                operating_hour = create_operating_hour(date, created_location)
+                for event in events:
+                    meal_event = create_meal_event(event, operating_hour.id)
+                    menus = event.get('menu')
+                    for menu in menus:
+                        items = menu.get('items')
+                        meal_category = create_meal_category(menu, meal_event.id)
+                        for item in items:
+                            meal_item = create_meal_item(item, meal_category)
+            dining_items = location.get('diningItems')
+            for item in dining_items:
+                create_dining_item(item)
 
-        pass
 
 def load_data_from_api_endpoint(api_url):
     page = urllib.request
@@ -67,6 +125,3 @@ def create_location(location_info):
     location.save()
 
     return location
-
-def create_operating_hour(date, location):
-    OperatingHour.objects.create(date=date, location=location)

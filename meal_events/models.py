@@ -9,4 +9,4 @@ class MealEvent(models.Model):
     end_timestamp = models.BigIntegerField(null=True)
     start_time = models.CharField(null=True, max_length=50)
     end_time = models.CharField(null=True, max_length=50)
-    operating_hour = models.ForeignKey(OperatingHour, on_delete=models.CASCADE)
+    operating_hour = models.ForeignKey(OperatingHour, on_delete=models.CASCADE, null=True, default=None)

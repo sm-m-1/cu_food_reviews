@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <title>Title</title>
+</head>
+<body>
+    <h2>Locations</h2>
+    <ul>
+        {% for location in object_list %}
+        <li>{{ location.eatery_name }}</li>
+        <li>{{ location.operatinghour_set.all }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
