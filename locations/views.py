@@ -27,13 +27,24 @@ class LocationList(ListView):
         for location in object_list_old:
             info = {}
             info['location'] = location
-            info['meal_event'] = MealEvent.objects.filter(operating_hour__date=date, operating_hour__location=location)
-            info['meal_category'] = MealEvent.objects.filter()
+            meal_events = MealEvent.objects.filter(operating_hour__date=date, operating_hour__location=location)
+            meal_event_data = {}
+            for event in meal_events:
+                meal_categories = MealCategory.objects.filter(meal_event=event)
+                meal_category_data = {}
+                for category in meal_categories:
+                    meal_category_data['category'] = category
+                    meal_category_data['category_data'] = MealCategory.objects.filter(meal_event=event)
+
+                meal_event_data['event'] = event
+                meal_event_data['event_data'] = meal_category_data
+                # print("meal_event_data: ", meal_event_data)
+                info['location_data'] = meal_event_data
 
             # info['meal_items'] = MealItem.objects.filter(meal_category__meal_event__operating=)
             object_list_new.append(info)
         context['object_list'] = object_list_new
-        # print("context: ", context)
+        print("context: ", context)
         return context
 
     def get_queryset(self):

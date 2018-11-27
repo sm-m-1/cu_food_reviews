@@ -8,15 +8,26 @@
 <body>
     <h2>Locations</h2>
     <ul>
-        {% for location in object_list %}
-        <li>{{ location.location.eatery_name }}</li>
-            <ol>
-            {% for item in location.meal_event %}
-                <li>{{ item.description }}</li>
-                <li>{{ item.start_time }}</li>
-                <li>{{ item.end_time }}</li>
-            {% endfor %}
-            </ol>
+        {% for object in object_list %}
+            <li>{{ object.location.eatery_name }}</li>
+            <ul>
+              <li>
+                {{ object.location_data.event.description }}
+                :
+                {{ object.location_data.event.start_time }}
+                -
+                {{ object.location_data.event.end_time }}
+              </li>
+              <ul>
+                <li> {{ object.location_data.event_data.category }} </li>
+                {% for category in object.location_data.event_data.category_data %}
+                  <li> {{ category }}</li>
+                {% endfor %}
+              </ul>
+
+
+
+            </ul>
 {#            <h2>Meal Categories</h2>#}
 {#            <ol>#}
 {#            {% for meal_category in location.meal_category %}#}
