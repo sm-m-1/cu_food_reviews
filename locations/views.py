@@ -12,25 +12,6 @@ from rest_framework.views import APIView
 from rest_framework import routers, serializers, viewsets, generics, renderers
 
 
-# Create your views here.
-
-class LocationsApiView(generics.ListAPIView):
-    queryset = Location.objects.all()
-    renderer_classes = (renderers.JSONRenderer,)
-    serializer_class = LocationListSerializer
-
-    def list(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
-
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
-
-    def get_queryset(self):
-        date = self.kwargs['date']
-        print("date:", date)
-        return super().get_queryset()
-
-
 class LocationList(ListView):
     model = Location
     template_name = 'location-list.html'
@@ -59,6 +40,25 @@ class LocationList(ListView):
         query = super().get_queryset()
         # print("query:", query)
         return query
+
+
+
+# django rest framework simple view.
+# class LocationsApiView(generics.ListAPIView):
+#     queryset = Location.objects.all()
+#     renderer_classes = (renderers.JSONRenderer,)
+#     serializer_class = LocationListSerializer
+#
+#     def list(self, request, *args, **kwargs):
+#         queryset = self.get_queryset()
+#
+#         serializer = self.get_serializer(queryset, many=True)
+#         return Response(serializer.data)
+#
+#     def get_queryset(self):
+#         date = self.kwargs['date']
+#         print("date:", date)
+#         return super().get_queryset()
 
 
 
