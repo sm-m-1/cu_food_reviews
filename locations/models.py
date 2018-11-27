@@ -31,5 +31,8 @@ class Location(models.Model):
     # def get_menus(self):
     #     return MealItem.objects.all()
 
+    def __str__(self):
+        return self.eatery_name
+
 
 

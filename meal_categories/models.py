@@ -8,3 +8,6 @@ class MealCategory(models.Model):
     name = models.CharField(null=True, max_length=100)
     sort_index = models.IntegerField(null=True)
     meal_event = models.ManyToManyField(MealEvent)
+
+    def __str__(self):
+        return self.name

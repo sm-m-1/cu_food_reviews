@@ -1,11 +1,35 @@
 from django.shortcuts import render
 from django.views.generic import ListView
+from rest_framework.response import Response
+
 from locations.models import Location
+from locations.serializers import LocationListSerializer
 from meal_categories.models import MealCategory
 from operating_hours.models import OperatingHour
 from meal_events.models import MealEvent
 from meal_items.models import MealItem
+from rest_framework.views import APIView
+from rest_framework import routers, serializers, viewsets, generics, renderers
+
+
 # Create your views here.
+
+class LocationsApiView(generics.ListAPIView):
+    queryset = Location.objects.all()
+    renderer_classes = (renderers.JSONRenderer,)
+    serializer_class = LocationListSerializer
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def get_queryset(self):
+        date = self.kwargs['date']
+        print("date:", date)
+        return super().get_queryset()
+
 
 class LocationList(ListView):
     model = Location

@@ -10,3 +10,6 @@ class MealItem(models.Model):
     is_healthy = models.BooleanField(default=False)
     sort_index = models.IntegerField(null=True)
     meal_category = models.ManyToManyField(MealCategory)
+
+    def __str__(self):
+        return self.name

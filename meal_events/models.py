@@ -10,3 +10,7 @@ class MealEvent(models.Model):
     start_time = models.CharField(null=True, max_length=50)
     end_time = models.CharField(null=True, max_length=50)
     operating_hour = models.ForeignKey(OperatingHour, on_delete=models.CASCADE, null=True, default=None)
+
+
+    def __str__(self):
+        return self.description
