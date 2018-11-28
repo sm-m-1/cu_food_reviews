@@ -1,6 +1,7 @@
 from django.db import models
 
 # Create your models here.
+from locations.models import Location
 from meal_categories.models import MealCategory
 
 
@@ -10,6 +11,7 @@ class MealItem(models.Model):
     is_healthy = models.BooleanField(default=False)
     sort_index = models.IntegerField(null=True)
     meal_category = models.ManyToManyField(MealCategory)
+    meal_location = models.ForeignKey(Location, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.name

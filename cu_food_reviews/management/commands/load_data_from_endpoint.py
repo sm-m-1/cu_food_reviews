@@ -27,14 +27,19 @@ def create_meal_event(event, operating_hour_id):
 
 
 def create_meal_category(menu, meal_event):
-    object = MealCategory.objects.get_or_create(name=menu.get('category'))
+    object = MealCategory.objects.get_or_create(
+        name=menu.get('category'),
+        meal_event=meal_event
+    )
     meal_category = object[0]
-    meal_category.meal_event.add(meal_event)
     return object[0]
 
 
-def create_meal_item(item, meal_category):
-    object = MealItem.objects.get_or_create(name=item.get('item'))
+def create_meal_item(item, meal_category, location):
+    object = MealItem.objects.get_or_create(
+        name=item.get('item'),
+        meal_location_id=location.id
+    )
     meal_item = object[0]
     meal_item.is_healthy = item.get('healthy')
     meal_item.sort_index = item.get('sortIdx')
@@ -87,7 +92,7 @@ class Command(BaseCommand):
                         items = menu.get('items')
                         meal_category = create_meal_category(menu, meal_event)
                         for item in items:
-                            meal_item = create_meal_item(item, meal_category)
+                            meal_item = create_meal_item(item, meal_category, created_location)
             dining_items = location.get('diningItems')
             for item in dining_items:
                 create_dining_item(item)
