@@ -28,6 +28,7 @@ class LocationList(ListView):
             info = {
                 'location': location,
                 'location_data': [],
+                'dining_items': [],
             }
             meal_events = MealEvent.objects.filter(operating_hour__date=date, operating_hour__location=location)
             # print("meal_events: ", meal_events)
@@ -55,9 +56,10 @@ class LocationList(ListView):
                 }
                 info['location_data'].append(data)
 
-            # info['meal_items'] = MealItem.objects.filter(meal_category__meal_event__operating=)
+            dining_items = MealItem.objects.filter(meal_location=location, is_dining_item=True)
+            info['dining_items'] = dining_items
             object_list_new.append(info)
-            break
+            # break
         context['object_list'] = object_list_new
         print("context: ", context)
         return context

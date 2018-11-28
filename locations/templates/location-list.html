@@ -10,9 +10,14 @@
     <ul>
         {% for object in object_list %}
             <li>{{ object.location.eatery_name }}</li>
+
             <ul>
               {% for data in object.location_data %}
-                <li>{{ data.event }}</li>
+                <li>
+                  {{ data.event }}:
+                  {{ data.event.start_time }} -
+                  {{ data.event.end_time }}
+                </li>
                 <ul>
                 {% for element in data.meal_category_data %}
                   <li>{{ element.category }}</li>
@@ -26,9 +31,18 @@
 
                 </ul>
               {% endfor %}
-
-
             </ul>
+            <ul>
+              <li> Extra: </li>
+              <ul>
+                {% for item in object.dining_items %}
+                <li> {{ item.name }} </li>
+                {% empty %}
+                  No extra items.
+                {% endfor %}
+              </ul>
+            </ul>
+
 
         {% endfor %}
     </ul>

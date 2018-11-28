@@ -45,17 +45,21 @@ def create_meal_item(item, meal_category, location):
     meal_item.sort_index = item.get('sortIdx')
     meal_item.save()
     meal_item.meal_category.add(meal_category)
-    return item
+    return meal_item
 
 
-def create_dining_item(item):
-    object = MealItem.objects.get_or_create(name=item.get('item'))
+def create_dining_item(item, location):
+    object = MealItem.objects.get_or_create(
+        name=item.get('item'),
+        meal_location=location
+    )
     meal_item = object[0]
     meal_item.is_healthy = item.get('healthy')
     meal_item.sort_index = item.get('sortIdx')
     meal_item.description = item.get('descr')
+    meal_item.is_dining_item = True
     meal_item.save()
-    return item
+    return meal_item
 
 
 def create_operating_hour(date, location):
@@ -95,7 +99,7 @@ class Command(BaseCommand):
                             meal_item = create_meal_item(item, meal_category, created_location)
             dining_items = location.get('diningItems')
             for item in dining_items:
-                create_dining_item(item)
+                create_dining_item(item, created_location)
 
 
 def load_data_from_api_endpoint(api_url):
