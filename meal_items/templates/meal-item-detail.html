@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+  <h3>{{ object.name }} <h6>@ {{ object.meal_location }}</h6></h3>
+  <input name="input-3" data-size="sm" value="{{ average_rating }}" class="rating-loading user-review-star">
+  ({{ reviews_list.count }})
+  <hr>
+  <h4>Leave a rating: </h4>
+{#  <form method="POST" class="post-form">{% csrf_token %}#}
+{#    <input required id="input-1" name="input-1" class="rating rating-loading" data-min="0" data-max="5" data-step="1">#}
+{#    <hr>#}
+{#    <label for="review_comment">Comments</label>#}
+{#    <textarea class="form-control my-2" id="review_comment" name="review_comment" rows="3"></textarea>#}
+{#    <button type="submit" class="btn btn-primary">Submit</button>&nbsp;#}
+{#    <button type="reset" class="btn btn-outline-secondary">Reset</button>#}
+{#  </form>#}
+  <form method="POST" class="post-form" action="{% url 'meal_item' item_slug=object.slug %}">{% csrf_token %}
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit" class="btn btn-primary">Submit</button>&nbsp;
+    <button type="reset" class="btn btn-outline-secondary">Reset</button>
+  </form>
+  <hr>
+  <h4>All Ratings.</h4>
+  {% for review in reviews_list %}
+    <ul>
+    <li> <input name="input-3" value="{{ review.rating }}" data-size="sm" class="rating-loading user-review-star"></li>
+    <li>{{ review.comment }}</li>
+    <li>Posted on: {{ review.created_on }}</li>
+    </ul>
+  {% endfor %}
+
+  <script>
+$(document).on('ready', function(){
+    $('.user-review-star').rating({displayOnly: true, step: 0.0});
+});
+</script>
+
+{% endblock content %}
+
+

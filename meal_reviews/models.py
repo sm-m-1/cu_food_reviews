@@ -7,7 +7,7 @@ from meal_items.models import MealItem
 
 class Review(models.Model):
     comment = models.TextField(null=True)
-    date_created = models.DateTimeField(default=datetime.now)
-    rating = models.IntegerField(default=4)
+    created_on = models.DateTimeField(default=datetime.now)
+    rating = models.IntegerField(default=4, null=True)
     menu_item = models.ForeignKey(MealItem, on_delete=models.CASCADE)
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)

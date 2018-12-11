@@ -19,9 +19,11 @@ from django.urls import path, include
 from rest_framework import routers
 
 from locations.views import LocationList
+from meal_items.views import MealItemDetail
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('', LocationList.as_view(), name='location_list'),
-    path('home/<date>/', LocationList.as_view(), name='location_list'),
+    path('home/', LocationList.as_view(), name='location_list'),
+    path('home/items/<slug:item_slug>', MealItemDetail.as_view(), name='meal_item'),
 ]

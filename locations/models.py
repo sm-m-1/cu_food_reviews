@@ -8,7 +8,7 @@ from django.db import models
 
 class Location(models.Model):
     c_id = models.BigIntegerField(null=True, unique=True)
-    slug = models.SlugField(max_length=200, null=True)
+    slug = models.SlugField(max_length=200, null=True, unique=True)
     eatery_name = models.CharField(null=True, max_length=200)
     eatery_name_short = models.CharField(null=True, max_length=100)
     about = models.TextField(null=True)
@@ -33,6 +33,3 @@ class Location(models.Model):
 
     def __str__(self):
         return self.eatery_name
-
-
-

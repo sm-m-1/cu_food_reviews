@@ -1,50 +1,119 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-    <title>Title</title>
-</head>
-<body>
-    <h2>Locations</h2>
+{% extends "base.html" %}
+{% block content %}
+  <h2>Eateries</h2>
+  <div class="container my-4">
+    <form method="GET" action="{% url 'location_list' %}" class="form-inline my-2 my-lg-0">
+      <input type="radio"
+             name="campus_area_short"
+             id="campus_area_none"
+             value=""
+             onchange="this.form.submit()"
+              {% if "" == request.GET.campus_area_short %}
+             checked
+              {% endif %}> <label for="campus_area_none" class="btn btn-primary mx-2">All</label><br>
+      <input type="radio"
+             name="campus_area_short"
+             id="campus_area_north"
+             value="North"
+             onchange="this.form.submit()"
+              {% if "North" == request.GET.campus_area_short %}
+             checked
+              {% endif %}> <label for="campus_area_north" class="btn btn-primary mx-2">North</label><br>
+      <input type="radio"
+             name="campus_area_short"
+             id="campus_area_central"
+             value="Central"
+             onchange="this.form.submit()"
+              {% if "Central" == request.GET.campus_area_short %}
+             checked
+              {% endif %}> <label for="campus_area_central" class="btn btn-primary mx-2">Central</label><br>
+      <input type="radio"
+             name="campus_area_short"
+             id="campus_area_west"
+             value="West"
+             onchange="this.form.submit()"
+              {% if "West" == request.GET.campus_area_short %}
+             checked
+              {% endif %}> <label for="campus_area_west" class="btn btn-primary mx-2">West</label><br>
+
+      <label class="mx-3" for="date">Date: </label>
+      <select name="date" id="date" onchange="this.form.submit()">
+        {% for date in date_list %}
+          <option value="{{ date }}"
+                  {% if date == request.GET.date %}
+                  selected
+                  {% endif %}>
+            {{ date }}
+          </option>
+        {% endfor %}
+      </select>
+      {#      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>#}
+    </form>
+  </div>
+
+  <div class="container">
     <ul>
-        {% for object in object_list %}
-            <li>{{ object.location.eatery_name }}</li>
+      {% for object in object_list %}
+        <div class="row my-2">
+          <div class="col">
+            <div class="card">
+{#              <li>{{ object.location.eatery_name }}</li>#}
+              <div class="card-header">
+                <h5>{{ object.location.eatery_name }}</h5>
+              </div>
 
-            <ul>
-              {% for data in object.location_data %}
-                <li>
-                  {{ data.event }}:
-                  {{ data.event.start_time }} -
-                  {{ data.event.end_time }}
-                </li>
-                <ul>
-                {% for element in data.meal_category_data %}
-                  <li>{{ element.category }}</li>
-                  <ul>
-                    {% for item in element.category_items %}
-                      <li> {{ item.name }}</li>
-                    {% endfor %}
-                  </ul>
-
-                {% endfor %}
-
-                </ul>
-              {% endfor %}
-            </ul>
-            <ul>
-              <li> Extra: </li>
               <ul>
-                {% for item in object.dining_items %}
-                <li> {{ item.name }} </li>
-                {% empty %}
-                  No extra items.
+                {% for data in object.location_data %}
+                  <li>
+                    {{ data.event }}:
+                    {{ data.event.start_time }} -
+                    {{ data.event.end_time }}
+                  </li>
+                  <ul>
+                    {% for element in data.meal_category_data %}
+                      <li>{{ element.category }}</li>
+                      <ul>
+                        {% for item in element.category_items %}
+                          {#                      <li> {{ item.name }}</li>#}
+                          <li>
+                            <a href="{{ item.get_absolute_url }}">
+                              {{ item.name }}
+                              <input name="input-3"
+                                     data-size="xm"
+                                     value="{{ item.get_average_rating }}"
+                                     class="rating-loading user-review-star"
+                                     type="button"
+                              >
+                            </a>
+
+                          </li>
+                        {% endfor %}
+                      </ul>
+
+                    {% endfor %}
+
+                  </ul>
                 {% endfor %}
               </ul>
-            </ul>
-
-
-        {% endfor %}
+              <ul>
+                <li> Extra: </li>
+                <ul>
+                  {% for item in object.dining_items %}
+                    <li><a href="{{ item.get_absolute_url }}"> {{ item.name }} </a></li>
+                  {% empty %}
+                    No extra items.
+                  {% endfor %}
+                </ul>
+              </ul>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
     </ul>
-</body>
-</html>
+  </div>
+  <script>
+    $(document).on('ready', function(){
+      $('.user-review-star').rating({displayOnly: true, step: 0.0});
+    });
+  </script>
+{% endblock content %}
