@@ -50,33 +50,90 @@
       {#      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>#}
     </form>
   </div>
-
-  <div>
+{#  <div id="my_scroll_spy" class="card m-5">#}
+{#    {% for object in object_list %}#}
+{#      <a class="d-block" href="#{{ object.location.slug }}"> {{ object.location.eatery_name }}</a>#}
+{#    {% endfor %}#}
+{#  </div>#}
+  <div class="accordion" id="accordionExample">
     {% for object in object_list %}
       <div class="row my-2">
         <div class="col">
           <div class="card">
             {#              <li>{{ object.location.eatery_name }}</li>#}
-            <div class="card-header">
-              <h3 class="text-danger">{{ object.location.eatery_name }}</h3>
-              <p>{{ object.location.about_short }}</p>
+            <div class="card-header" id="heading-{{ forloop.counter }}">
+              <div class="row">
+                <div class="col">
+                  <div class="float-left">
+                    <h3 class="text-danger">
+                      {{ object.location.eatery_name }}
+                    </h3>
+                  </div>
+                  <div class="float-left ml-5 mt-3">
+                    <button id="{{ object.location.slug }}" onclick="myFunction(this.id)" class="btn btn-primary show-hide-menu-button" type="button" data-toggle="collapse" data-target="#collapse-{{ forloop.counter }}" aria-expanded="false" aria-controls="collapse-{{ forloop.counter }}">
+                      Menu +
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <p>{{ object.location.about_short }}</p>
+                </div>
+              </div>
+
             </div>
+            <div id="collapse-{{ forloop.counter }}" class="collapse" aria-labelledby="heading-{{ forloop.counter }}" data-parent="#accordionExample">
+              <div class="card-body">
+                {% for data in object.location_data %}
+                  <div class="container">
+                    {% if data.meal_category_data %}
+                      <h4>
+                        {{ data.event }}:
+                        {{ data.event.start_time }} -
+                        {{ data.event.end_time }}
+                      </h4>
+                    {% endif %}
+                    {% for element in data.meal_category_data %}
+                      <h5>{{ element.category }}</h5>
 
-            {% for data in object.location_data %}
-              <div class="container">
-                <h4>
-                  {{ data.event }}:
-                  {{ data.event.start_time }} -
-                  {{ data.event.end_time }}
-                </h4>
-                {% for element in data.meal_category_data %}
-                  <h5>{{ element.category }}</h5>
+                      {% for item in element.category_items %}
+                        {#                      <li> {{ item.name }}</li>#}
+                        <div class="row">
+                          <div class="col">
 
-                  {% for item in element.category_items %}
-                    {#                      <li> {{ item.name }}</li>#}
+                            <div class="float-left">
+                              <a href="{{ item.get_absolute_url }}">
+                                {{ item.name }}
+                              </a>
+                            </div>
+                            <div class="float-left ml-3">
+                              <div class="form-inline">
+                                <input name="input-3"
+                                       data-size="xm"
+                                       value="{{ item.get_average_rating }}"
+                                       class="rating-loading user-review-star"
+                                       type="button"
+                                >
+                                <a href="{{ item.get_absolute_url }}">
+                                  ( {{ item.get_rating_count }} )
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      {% endfor %}
+                    {% endfor %}
+                    {% if data.meal_category_data %} <hr> {% endif %}
+                  </div>
+                {% endfor %}
+                <div class="container">
+                  {% if object.dining_items %}
+                    <h5> Extra: </h5>
+                  {% endif %}
+                  {% for item in object.dining_items %}
                     <div class="row">
                       <div class="col">
-
                         <div class="float-left">
                           <a href="{{ item.get_absolute_url }}">
                             {{ item.name }}
@@ -98,38 +155,8 @@
                       </div>
                     </div>
                   {% endfor %}
-                {% endfor %}
-              <hr>
-              </div>
-            {% endfor %}
-            <div class="container">
-              {% if object.dining_items %}
-                <h5> Extra: </h5>
-              {% endif %}
-              {% for item in object.dining_items %}
-                <div class="row">
-                  <div class="col">
-                    <div class="float-left">
-                      <a href="{{ item.get_absolute_url }}">
-                        {{ item.name }}
-                      </a>
-                    </div>
-                    <div class="float-left ml-3">
-                      <div class="form-inline">
-                        <input name="input-3"
-                               data-size="xm"
-                               value="{{ item.get_average_rating }}"
-                               class="rating-loading user-review-star"
-                               type="button"
-                        >
-                        <a href="{{ item.get_absolute_url }}">
-                          ( {{ item.get_rating_count }} )
-                        </a>
-                      </div>
-                    </div>
-                  </div>
                 </div>
-              {% endfor %}
+              </div>
             </div>
 
 
@@ -142,5 +169,27 @@
     $(document).on('ready', function(){
       $('.user-review-star').rating({displayOnly: true, step: 0.0, showCaption: false});
     });
+    function myFunction(clicked_id) {
+      current = document.getElementById(clicked_id).innerHTML;
+      {#console.log("test: " + document.getElementById(clicked_id).innerHTML);#}
+      all_buttons = document.getElementsByClassName("show-hide-menu-button");
+      if (current.includes("Menu +")) {
+        document.getElementById(clicked_id).innerHTML = "Menu -";
+        for(var i = 0; i < all_buttons.length; i++) {
+          if (all_buttons[i].id !== clicked_id) {
+            all_buttons[i].innerHTML = "Menu +";
+          }
+        }
+      } else {
+        document.getElementById(clicked_id).innerHTML = "Menu +";
+        if (current !== "Menu -") {
+          for(var i = 0; i < all_buttons.length; i++) {
+            if (all_buttons[i].id !== clicked_id) {
+              all_buttons[i].innerHTML = "Menu -";
+            }
+          }
+        }
+      }
+    }
   </script>
 {% endblock content %}
