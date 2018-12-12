@@ -51,69 +51,96 @@
     </form>
   </div>
 
-  <div class="container">
-    <ul>
-      {% for object in object_list %}
-        <div class="row my-2">
-          <div class="col">
-            <div class="card">
-{#              <li>{{ object.location.eatery_name }}</li>#}
-              <div class="card-header">
-                <h5>{{ object.location.eatery_name }}</h5>
-              </div>
-
-              <ul>
-                {% for data in object.location_data %}
-                  <li>
-                    {{ data.event }}:
-                    {{ data.event.start_time }} -
-                    {{ data.event.end_time }}
-                  </li>
-                  <ul>
-                    {% for element in data.meal_category_data %}
-                      <li>{{ element.category }}</li>
-                      <ul>
-                        {% for item in element.category_items %}
-                          {#                      <li> {{ item.name }}</li>#}
-                          <li>
-                            <a href="{{ item.get_absolute_url }}">
-                              {{ item.name }}
-                              <input name="input-3"
-                                     data-size="xm"
-                                     value="{{ item.get_average_rating }}"
-                                     class="rating-loading user-review-star"
-                                     type="button"
-                              >
-                            </a>
-
-                          </li>
-                        {% endfor %}
-                      </ul>
-
-                    {% endfor %}
-
-                  </ul>
-                {% endfor %}
-              </ul>
-              <ul>
-                <li> Extra: </li>
-                <ul>
-                  {% for item in object.dining_items %}
-                    <li><a href="{{ item.get_absolute_url }}"> {{ item.name }} </a></li>
-                  {% empty %}
-                    No extra items.
-                  {% endfor %}
-                </ul>
-              </ul>
+  <div>
+    {% for object in object_list %}
+      <div class="row my-2">
+        <div class="col">
+          <div class="card">
+            {#              <li>{{ object.location.eatery_name }}</li>#}
+            <div class="card-header">
+              <h3 class="text-danger">{{ object.location.eatery_name }}</h3>
+              <p>{{ object.location.about_short }}</p>
             </div>
+
+            {% for data in object.location_data %}
+              <div class="container">
+                <h4>
+                  {{ data.event }}:
+                  {{ data.event.start_time }} -
+                  {{ data.event.end_time }}
+                </h4>
+                {% for element in data.meal_category_data %}
+                  <h5>{{ element.category }}</h5>
+
+                  {% for item in element.category_items %}
+                    {#                      <li> {{ item.name }}</li>#}
+                    <div class="row">
+                      <div class="col">
+
+                        <div class="float-left">
+                          <a href="{{ item.get_absolute_url }}">
+                            {{ item.name }}
+                          </a>
+                        </div>
+                        <div class="float-left ml-3">
+                          <div class="form-inline">
+                            <input name="input-3"
+                                   data-size="xm"
+                                   value="{{ item.get_average_rating }}"
+                                   class="rating-loading user-review-star"
+                                   type="button"
+                            >
+                            <a href="{{ item.get_absolute_url }}">
+                              ( {{ item.get_rating_count }} )
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  {% endfor %}
+                {% endfor %}
+              <hr>
+              </div>
+            {% endfor %}
+            <div class="container">
+              {% if object.dining_items %}
+                <h5> Extra: </h5>
+              {% endif %}
+              {% for item in object.dining_items %}
+                <div class="row">
+                  <div class="col">
+                    <div class="float-left">
+                      <a href="{{ item.get_absolute_url }}">
+                        {{ item.name }}
+                      </a>
+                    </div>
+                    <div class="float-left ml-3">
+                      <div class="form-inline">
+                        <input name="input-3"
+                               data-size="xm"
+                               value="{{ item.get_average_rating }}"
+                               class="rating-loading user-review-star"
+                               type="button"
+                        >
+                        <a href="{{ item.get_absolute_url }}">
+                          ( {{ item.get_rating_count }} )
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+
+
           </div>
         </div>
-      {% endfor %}
-    </ul>
+      </div>
+    {% endfor %}
   </div>
   <script>
     $(document).on('ready', function(){
-      $('.user-review-star').rating({displayOnly: true, step: 0.0});
+      $('.user-review-star').rating({displayOnly: true, step: 0.0, showCaption: false});
     });
   </script>
 {% endblock content %}
