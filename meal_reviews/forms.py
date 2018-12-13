@@ -5,6 +5,7 @@ from django.views.generic import FormView
 from django.views.generic.detail import SingleObjectMixin
 from meal_items.models import MealItem
 from meal_reviews.models import Review
+
 class ReviewForm(forms.Form):
     star_rating = forms.IntegerField(
         widget=forms.TextInput(

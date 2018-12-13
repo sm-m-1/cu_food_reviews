@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
   <h2>Eateries</h2>
+  {% if authenticated_user %}
+    <h3>Hi, {{ authenticated_user }}</h3>
+  {% endif %}
   <div class="container my-4">
     <form method="GET" action="{% url 'location_list' %}" class="form-inline my-2 my-lg-0">
       <input type="radio"

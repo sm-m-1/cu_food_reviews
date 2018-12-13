@@ -1,0 +1,10 @@
+{% autoescape off %}
+  Hi {{ user.username }},
+
+  Please click on the link to confirm your registration.
+
+  http://{{ domain }}{% url 'user_activate' %}?uidb64={{ uid }}&token={{ utoken }}
+
+  You will need to confirm your email address before you can login.
+
+{% endautoescape %}

@@ -17,13 +17,37 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
+from django.contrib.auth import views as auth_views
+# auth_views.PasswordResetView
+# auth_views.PasswordResetForm
+# auth_views.PasswordResetConfirmView
+# auth_views.PasswordResetCompleteView
+# auth_views.PasswordResetDoneView
 
 from locations.views import LocationList
 from meal_items.views import MealItemDetail
+from accounts.views import (
+    LoginFormView,
+    SignUpFormView,
+    LogoutFormView,
+    signup_success,
+    UserActivationView,
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('', LocationList.as_view(), name='location_list'),
     path('home/', LocationList.as_view(), name='location_list'),
     path('home/items/<slug:item_slug>', MealItemDetail.as_view(), name='meal_item'),
+    path('accounts/signup', SignUpFormView.as_view(), name='signup'),
+    path('accounts/login', LoginFormView.as_view(), name='login'),
+    path('accounts/logout', LogoutFormView.as_view(), name='logout'),
+    path('accounts/signup/success', signup_success, name='signup_success'),
+    path('accounts/signup/activate/', UserActivationView.as_view(), name='user_activate'),
+
+
+    path('accounts/password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
+    path('accounts/password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('accounts/password_reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('accounts/password_reset/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 ]

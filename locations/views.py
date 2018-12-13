@@ -20,7 +20,7 @@ class LocationList(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(object_list=object_list, **kwargs)
         # print("context: ", context)
-        date = self.request.GET.get('date')
+        date = self.request.GET.get('date', '2018-12-01')
         # print("self.kwargs['date']", date)
         # print("type(date):", type(date))
         object_list_old = context['object_list']
@@ -70,14 +70,13 @@ class LocationList(ListView):
         # context['start_date'] = start_date.isoformat()
         # context['end_date'] = end_date.isoformat()
         context['date_list'] = next_seven_days
-
-
-
+        if self.request.user.is_authenticated:
+            context['authenticated_user'] = self.request.user.username
         return context
 
     def get_queryset(self):
         query = super().get_queryset()
-        area_name = self.request.GET.get('campus_area_short')
+        area_name = self.request.GET.get('campus_area_short', 'North')
         query = query.filter(campus_area_short__icontains=area_name)
         if area_name: query = query.order_by('-eatery_name')
         # print("self.request.GET:", self.request.GET)

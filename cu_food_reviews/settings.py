@@ -46,7 +46,9 @@ INSTALLED_APPS = [
     'meal_reviews',
     'operating_hours',
     'meal_items',
+    'accounts',
     'rest_framework',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -60,6 +62,11 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'cu_food_reviews.urls'
+
+LOGIN_REDIRECT_URL = 'location_list'
+
+EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
 
 TEMPLATES = [
     {
