@@ -63,7 +63,7 @@ class LocationList(ListView):
             # break
         context['object_list'] = object_list_new
         # print("context: ", context)
-        temp_start_date = "2018-11-27"
+        temp_start_date = "2018-12-01"
         start_date = datetime.strptime(temp_start_date, "%Y-%m-%d").date()
         # end_date = start_date + timedelta(days=7)
         next_seven_days = [( start_date + timedelta(days=i) ).isoformat() for i in range(7)]
