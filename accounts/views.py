@@ -16,6 +16,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import send_mail
 # Create your views here.
 
 class SignUpFormView(generic.FormView):
@@ -40,6 +41,7 @@ class SignUpFormView(generic.FormView):
             password=pass_word
         )
         new_user.is_active = False
+        new_user.save()
         token = default_token_generator.make_token(new_user)
         # need to encode the user id into bytes and then decode that to string
         # so that the view can later decode the bytes and convert back to user id.
@@ -55,6 +57,13 @@ class SignUpFormView(generic.FormView):
             'utoken': token,
         })
         print("message: ", message)
+        send_mail(
+            mail_subject,
+            message,
+            'test_from_email@gmail.com',
+            [new_user.email],
+            fail_silently=False
+        )
         to_email = form.cleaned_data.get('email')
         self.new_user = new_user
         return valid

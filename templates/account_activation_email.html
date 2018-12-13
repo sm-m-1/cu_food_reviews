@@ -1,10 +1,13 @@
 {% autoescape off %}
   Hi {{ user.username }},
 
-  Please click on the link to confirm your registration.
+  Please click on the link to confirm your registration and activate your account at Cornell Food.
 
   http://{{ domain }}{% url 'user_activate' %}?uidb64={{ uid }}&token={{ utoken }}
 
   You will need to confirm your email address before you can login.
+
+  Sincerely,
+  The Cornell Food Team
 
 {% endautoescape %}

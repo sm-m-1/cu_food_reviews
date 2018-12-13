@@ -8,12 +8,6 @@
         <form method="post">
           {% csrf_token %}
 
-          {% if form.errors %}
-            <div class="form-group">
-              <p class="text-danger">Your username and password didn't match. Please try again.</p>
-            </div>
-          {% endif %}
-
           <div class="form-group">
 {#            {{ form.username.label_tag }}#}
             <label for="{{ form.username.id_for_label }}">Email:</label>
@@ -26,8 +20,16 @@
             {% render_field form.password class="form-control" %}
           </div>
 
+          {% if form.errors %}
+            <div class="form-group">
+              <p class="text-danger">Your username and password didn't match. Please try again.</p>
+            </div>
+          {% endif %}
+
           <button type="submit" class="btn btn-primary">Login</button>
-          <p><a href="{% url 'password_reset' %}">Lost password?</a>
+          <div class="mt-3">
+            <p><a href="{% url 'password_reset' %}">Forgot password?</a>
+          </div>
         </form>
       </div>
     </div>

@@ -22,7 +22,7 @@ class SignUpForm(forms.Form):
             }
         )
     )
-    verify_password = forms.Field(
+    password2 = forms.Field(
         label="Confirm Password",
         widget=forms.PasswordInput(
             attrs={
@@ -31,17 +31,33 @@ class SignUpForm(forms.Form):
         )
     )
 
-    def clean_email(self):
+    def clean_username(self):
         new_email = self.cleaned_data.get("username")
         emails = User.objects.filter(email=new_email)
         if emails.exists():
             raise forms.ValidationError("Email is taken")
         return new_email
 
+    def clean_password(self):
+        password = self.cleaned_data.get("password")
+        password2 = self.cleaned_data.get("password2")
+
+        return password
+
+
+
     def clean(self):
+        error_messages = [
+            'Your passwords must match.',
+            'Your password must have 8 characters at least',
+            "Your password can't have all numbers"
+        ]
         data = self.cleaned_data
-        if data.get('password') != data.get('verify_password'):
-            raise forms.ValidationError('Your passwords must match.')
+        password = self.cleaned_data.get("password")
+        password2 = self.cleaned_data.get("password2")
+        password_valid = password == password2 and len(password) > 7 and (not str(password).isdigit())
+        if not password_valid:
+            raise forms.ValidationError(error_messages)
         return data
 
 
@@ -73,13 +89,6 @@ class LoginForm(forms.Form):
 
     def clean(self):
         data = self.cleaned_data
-        # if data.get('password') != data.get('verify_password'):
-        #     raise forms.ValidationError('Your passwords must match.')
-        # username2 = data.get('email')
-        # password2 = data.get('password')
-        # user = authenticate(username=username2, password=password2)
-        # if user is None:
-        #     raise forms.ValidationError('Your username/email or password is wrong. Try again')
         return super().clean()
 
 
