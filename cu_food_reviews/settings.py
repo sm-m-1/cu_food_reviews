@@ -68,7 +68,15 @@ LOGIN_REDIRECT_URL = 'location_list'
 # EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 # EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development only
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development only
+
+SEND_GRID_API_KEY = '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'
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'mashgreat'
+EMAIL_HOST_PASSWORD = 'dkd#EDfdf324DDF@$'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'cornellfood-support@cornellfood.com'
 
 TEMPLATES = [
     {

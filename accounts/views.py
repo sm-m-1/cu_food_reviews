@@ -18,6 +18,8 @@ from django.utils.encoding import force_bytes
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
 # Create your views here.
+from cu_food_reviews import settings
+
 
 class SignUpFormView(generic.FormView):
     template_name = 'signup.html'
@@ -57,15 +59,15 @@ class SignUpFormView(generic.FormView):
             'utoken': token,
         })
         print("message: ", message)
+        to_email = [str(new_user.email)]
+        print("to_email: ", to_email)
         send_mail(
             mail_subject,
             message,
-            'test_from_email@gmail.com',
-            [new_user.email],
+            settings.DEFAULT_FROM_EMAIL,
+            to_email,
             fail_silently=False
         )
-        to_email = form.cleaned_data.get('email')
-        self.new_user = new_user
         return valid
 
     def get_context_data(self, **kwargs):

@@ -1,7 +1,9 @@
 {% autoescape off %}
-  Hi {{ user.username }},
+  Hi,
 
-  Please click on the link to confirm your registration and activate your account at Cornell Food.
+  An account was successfully created for {{ user.username }}.
+
+  Please click on the link below to confirm registration and activate your account at Cornell Food.
 
   http://{{ domain }}{% url 'user_activate' %}?uidb64={{ uid }}&token={{ utoken }}
 
