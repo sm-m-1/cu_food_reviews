@@ -93,3 +93,42 @@ class LoginForm(forms.Form):
 
 
 
+class ContactForm(forms.Form):
+    fullname = forms.CharField(
+        label="Your name:",
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "Placeholder": "Your full name"}
+        )
+    )
+    email = forms.EmailField(
+        label="Your email:",
+        widget=forms.EmailInput(
+            attrs={
+                "class": "form-control",
+                "Placeholder": "Your Email"}
+        )
+    )
+    subject = forms.CharField(
+        label="Message subject:",
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "Placeholder": "Your subject"}
+        )
+    )
+    content = forms.CharField(
+        label="Message",
+        widget=forms.Textarea(
+            attrs={
+                "class": "form-control",
+                "Placeholder": "Your message"}
+        )
+    )
+
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        # if not "gmail.com" in email:
+        #     raise forms.ValidationError("Email has to be gmail.")
+        return email

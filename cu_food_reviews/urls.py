@@ -31,13 +31,16 @@ from accounts.views import (
     SignUpFormView,
     LogoutFormView,
     signup_success,
+    contact_page_success,
     UserActivationView,
-)
+    ContactFormView)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('', LocationList.as_view(), name='location_list'),
     path('home/', LocationList.as_view(), name='location_list'),
+    path('contact/', ContactFormView.as_view(), name='contact_page'),
+    path('contact/success', contact_page_success, name='contact_page_success'),
     path('home/items/<slug:item_slug>', MealItemDetail.as_view(), name='meal_item'),
     path('accounts/signup', SignUpFormView.as_view(), name='signup'),
     path('accounts/login', LoginFormView.as_view(), name='login'),

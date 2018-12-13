@@ -1,0 +1,19 @@
+{% autoescape off %}
+  Hi,
+
+  The following message submitted at Cornell Food Contact Us page.
+
+  From: {{ fullname }}.
+  Subject: {{ user_subject }}
+  Sender Email: {{ user_email }}
+
+  Message Subject:
+  {{ user_subject }}
+
+  Message:
+  {{ user_message }}
+
+  Sincerely,
+  The Cornell Food Team
+
+{% endautoescape %}

@@ -5,7 +5,7 @@ from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.views import generic
 from django.views import View
-from accounts.forms import SignUpForm, LoginForm
+from accounts.forms import SignUpForm, LoginForm, ContactForm
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_text
@@ -127,3 +127,50 @@ class UserActivationView(generic.TemplateView):
 
 
 
+class ContactFormView(generic.FormView):
+    template_name = 'contact.html'
+    form_class = ContactForm
+    def post(self, request, *args, **kwargs):
+        # if not request.user.is_authenticated:
+        #     return HttpResponseForbidden()
+        form = self.get_form()
+        # data = form.data
+        # print("data: ", data)
+        return super().post(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        # this method is called when valid form data as been posted.
+        valid = super().form_valid(form)
+        fullname = form.cleaned_data.get('fullname')
+        content = form.cleaned_data.get('content')
+        user_subject = form.cleaned_data.get('subject')
+        email = form.cleaned_data.get('email')
+        mail_subject = 'Cornell Food Website Contact Us Message'
+        message = render_to_string('contact_email.html', {
+            'fullname': fullname,
+            'user_subject': user_subject,
+            'user_email': email,
+            'user_message': content,
+        })
+        print("message: ", message)
+        to_email = [settings.CONTACT_TO_EMAIL]
+        print("to_email: ", to_email)
+        send_mail(
+            mail_subject,
+            message,
+            settings.DEFAULT_FROM_EMAIL,
+            to_email,
+            fail_silently=False
+        )
+        return valid
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        return context
+
+    def get_success_url(self):
+        return reverse('contact_page_success')
+
+def contact_page_success(request):
+    return render(request, template_name='contact_sucess.html')

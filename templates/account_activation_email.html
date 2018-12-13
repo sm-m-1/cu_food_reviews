@@ -2,11 +2,12 @@
   Hi,
 
   An account was successfully created for {{ user.username }}.
-
   Please click on the link below to confirm registration and activate your account at Cornell Food.
 
   http://{{ domain }}{% url 'user_activate' %}?uidb64={{ uid }}&token={{ utoken }}
 
+  If clicking the link above doesn't work, please copy and paste the URL in a new browser
+  window instead.
   You will need to confirm your email address before you can login.
 
   Sincerely,
