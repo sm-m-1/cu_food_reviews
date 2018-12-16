@@ -8,20 +8,15 @@
     <form method="GET" action="{% url 'location_list' %}" class="form-inline my-2 my-lg-0">
       <input type="radio"
              name="campus_area_short"
-             id="campus_area_none"
-             value=""
-             onchange="this.form.submit()"
-              {% if "" == request.GET.campus_area_short %}
-             checked
-              {% endif %}> <label for="campus_area_none" class="btn btn-primary mx-2">All</label><br>
-      <input type="radio"
-             name="campus_area_short"
              id="campus_area_north"
              value="North"
-             onchange="this.form.submit()"
-              {% if "North" == request.GET.campus_area_short %}
              checked
-              {% endif %}> <label for="campus_area_north" class="btn btn-primary mx-2">North</label><br>
+             onchange="this.form.submit()"
+{#              {% if "North" == request.GET.campus_area_short %}#}
+{#             checked#}
+{#              {% endif %}#}
+      >
+      <label for="campus_area_north" class="btn btn-primary mx-2">North</label><br>
       <input type="radio"
              name="campus_area_short"
              id="campus_area_central"
@@ -37,7 +32,18 @@
              onchange="this.form.submit()"
               {% if "West" == request.GET.campus_area_short %}
              checked
-              {% endif %}> <label for="campus_area_west" class="btn btn-primary mx-2">West</label><br>
+              {% endif %}>
+      <label for="campus_area_west" class="btn btn-primary mx-2">West</label><br>
+
+      <input type="radio"
+             name="campus_area_short"
+             id="campus_area_none"
+             value=""
+             onchange="this.form.submit()"
+              {% if "" == request.GET.campus_area_short %}
+             checked
+              {% endif %}>
+      <label for="campus_area_none" class="btn btn-primary mx-2">All</label><br>
 
       <label class="mx-3" for="date">Date: </label>
       <select name="date" id="date" onchange="this.form.submit()">

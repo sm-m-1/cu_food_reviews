@@ -42,6 +42,7 @@ urlpatterns = [
     path('contact/', ContactFormView.as_view(), name='contact_page'),
     path('contact/success', contact_page_success, name='contact_page_success'),
     path('home/items/<slug:item_slug>', MealItemDetail.as_view(), name='meal_item'),
+
     path('accounts/signup', SignUpFormView.as_view(), name='signup'),
     path('accounts/login', LoginFormView.as_view(), name='login'),
     path('accounts/logout', LogoutFormView.as_view(), name='logout'),
