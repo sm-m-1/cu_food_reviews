@@ -20,13 +20,20 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'v-boybzn_e&fc8$op(j&==^si^6_j3$z!e-3)k4bexv6yel(_4'
+try:
+    SECRET_KEY = os.environ['SECRET_KEY']
+except (KeyError):
+    from .local_settings import MY_LOCAL_SECRET_KEY
+    SECRET_KEY = MY_LOCAL_SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
+DATA_UPLOAD_MAX_MEMORY_SIZE = 20971520
+
+# LOGIN_REDIRECT_URL = 'home'
 
 # Application definition
 
@@ -49,6 +56,8 @@ INSTALLED_APPS = [
     'accounts',
     'rest_framework',
     'widget_tweaks',
+    'django_celery_results',
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
@@ -69,14 +78,17 @@ LOGIN_REDIRECT_URL = 'location_list'
 # EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
 
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development only
+EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
+try:
+    SENDGRID_API_KEY = os.environ['SENDGRID_API_KEY']
+except (KeyError):
+    from .local_settings import LOCAL_SENDGRID_API_KEY
+    SENDGRID_API_KEY = LOCAL_SENDGRID_API_KEY
 
-SEND_GRID_API_KEY = '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'
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = 'mashgreat'
-EMAIL_HOST_PASSWORD = 'dkd#EDfdf324DDF@$'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'cornellfood-support@cornellfood.com'
+DEFAULT_FROM_EMAIL = 'PacoApps-info@pacoapps.com'
+CONTACT_TO_EMAIL = 'mashthemyth@gmail.com'
+SENDGRID_SANDBOX_MODE_IN_DEBUG = False
+USER_SIGNUP_EMAIL_SUBJECT = 'Activate your Cornell Food account.'
 
 TEMPLATES = [
     {
@@ -144,7 +156,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'EST'
 
 USE_I18N = True
 
@@ -166,3 +178,10 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "build/static"), # needed for React app
     # '/var/www/static/',
 ]
+
+
+try:
+    from .local_settings import *
+except ImportError as e:
+    # ignore the existence of local_settings in production
+    pass
