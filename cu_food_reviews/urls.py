@@ -33,12 +33,15 @@ from accounts.views import (
     signup_success,
     contact_page_success,
     UserActivationView,
-    ContactFormView)
+    ContactFormView
+)
+
+from home.views import HomePageView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('', LocationList.as_view(), name='location_list'),
-    path('home/', LocationList.as_view(), name='location_list'),
+    path('', HomePageView.as_view(), name='home'),
+    path('locations/', LocationList.as_view(), name='location_list'),
     path('contact/', ContactFormView.as_view(), name='contact_page'),
     path('contact/success', contact_page_success, name='contact_page_success'),
     path('home/items/<slug:item_slug>', MealItemDetail.as_view(), name='meal_item'),
