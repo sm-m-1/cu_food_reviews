@@ -66,14 +66,15 @@
     </form>
   </div>
   <div class="row">
-    <div id="my_scroll_spy" class="col-lg-4">
-      <div class="affix">
-        {% for object in object_list %}
-          <a class="d-block" href="#{{ object.location.slug }}"> {{ object.location.eatery_name }}</a>
-        {% endfor %}
-      </div>
+    <div id="my_scroll_spy" class="col-md-4">
+    <div class="sticky-top">
+      {% for object in object_list %}
+        <a class="d-block" href="#{{ object.location.slug }}"> {{ object.location.eatery_name }}</a>
+      {% endfor %}
+
     </div>
-    <div class="col-lg-8" id="">
+    </div>
+    <div class="col-md-8" id="">
       {% for object in object_list %}
         <div class="row my-2">
           <div class="col">
