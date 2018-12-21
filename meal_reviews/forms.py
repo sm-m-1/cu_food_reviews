@@ -1,4 +1,8 @@
+import re
+
 from django import forms
+
+from .bad_words import BAD_WORDS
 
 class ReviewForm(forms.Form):
     star_rating = forms.IntegerField(
@@ -27,4 +31,12 @@ class ReviewForm(forms.Form):
         ),
         required=False,
     )
+
+    def clean_comment(self):
+        comment = self.cleaned_data.get("comment")
+        sentence_list = re.findall("[a-zA-Z0-9',.?!]+", comment)
+        for word in sentence_list:
+            if word.lower() in BAD_WORDS: raise forms.ValidationError("Please try to use more formal words.")
+        return comment
+
 
