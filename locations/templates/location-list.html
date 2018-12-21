@@ -6,6 +6,12 @@
   {% endif %}
   <div class="container my-4">
     <form method="GET" action="{% url 'location_list' %}" class="form-inline my-2 my-lg-0">
+      <input type="checkbox" name="open_today" id="open_today"
+             {% if "on" == request.GET.open_today %}
+               checked
+             {% endif %}
+             onchange="this.form.submit()">
+      <label class="m-1" for="open_today"> Open Today</label>
       <input type="radio"
              name="campus_area_short"
              id="campus_area_north"
@@ -59,126 +65,136 @@
       {#      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>#}
     </form>
   </div>
-{#  <div id="my_scroll_spy" class="card m-5">#}
-{#    {% for object in object_list %}#}
-{#      <a class="d-block" href="#{{ object.location.slug }}"> {{ object.location.eatery_name }}</a>#}
-{#    {% endfor %}#}
-{#  </div>#}
-  <div class="" id="">
-    {% for object in object_list %}
-      <div class="row my-2">
-        <div class="col">
-          <div class="card">
-            {#              <li>{{ object.location.eatery_name }}</li>#}
-            <div class="card-header" id="heading-{{ forloop.counter }}">
-              <div class="row">
-                <div class="col">
-                  <div class="float-left">
-                    <h3 class="text-danger">
-                      {{ object.location.eatery_name }}
-                    </h3>
+  <div class="row">
+    <div id="my_scroll_spy" class="col-lg-4">
+      <div class="affix">
+        {% for object in object_list %}
+          <a class="d-block" href="#{{ object.location.slug }}"> {{ object.location.eatery_name }}</a>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="col-lg-8" id="">
+      {% for object in object_list %}
+        <div class="row my-2">
+          <div class="col">
+            <div class="card">
+              {#              <li>{{ object.location.eatery_name }}</li>#}
+              <div class="card-header" id="{{ object.location.slug }}">
+                <div class="row">
+                  <div class="col">
+                    <div class="float-left">
+                      <h3 class="text-danger">
+                        {{ object.location.eatery_name }}
+                      </h3>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="row">
-                <div class="col">
-                  <h6>{{ object.location.about_short }}</h6>
+                <div class="row">
+                  <div class="col">
+                    <h6>{{ object.location.about_short }}</h6>
+                  </div>
                 </div>
-              </div>
-              <div class="row">
-                <div class="col">
-                    {% for data in object.location_data %}
-                      <p class="d-inline-block border-right-0 mr-3 ml-1 small_font">
-                        {{ data.event }}:
-                        {{ data.event.start_time }} -
-                        {{ data.event.end_time }}
-                      </p>
-                    {% endfor %}
+                <div class="row">
+                  <div class="col">
+                      {% if object.location_data %}
+                        {% for data in object.location_data %}
+                          <p class="d-inline-block border-right-0 mr-3 ml-1 small_font">
+                            {{ data.event }}:
+                            {{ data.event.start_time }} -
+                            {{ data.event.end_time }}
+                          </p>
+                        {% endfor %}
+
+                      {% else %}
+                        <p class="small_font text-danger">Closed today</p>
+                      {% endif %}
+                  </div>
                 </div>
+
               </div>
+              <div id="">
+                <div class="card-body">
+                  {% for data in object.location_data %}
+                    <div class="container">
+                      {% if data.meal_category_data %}
+                        <h4>
+                          {{ data.event }}:
+                          {{ data.event.start_time }} -
+                          {{ data.event.end_time }}
+                        </h4>
+                      {% endif %}
+                      {% for element in data.meal_category_data %}
+                        <h5>{{ element.category }}</h5>
 
-            </div>
-            <div id="">
-              <div class="card-body">
-                {% for data in object.location_data %}
-                  <div class="container">
-                    {% if data.meal_category_data %}
-                      <h4>
-                        {{ data.event }}:
-                        {{ data.event.start_time }} -
-                        {{ data.event.end_time }}
-                      </h4>
-                    {% endif %}
-                    {% for element in data.meal_category_data %}
-                      <h5>{{ element.category }}</h5>
+                        {% for item in element.category_items %}
+                          {#                      <li> {{ item.name }}</li>#}
+                          <div class="row">
+                            <div class="col">
 
-                      {% for item in element.category_items %}
-                        {#                      <li> {{ item.name }}</li>#}
-                        <div class="row">
-                          <div class="col">
-
-                            <div class="float-left">
-                              <a href="{{ item.get_absolute_url }}">
-                                {{ item.name }}
-                              </a>
-                            </div>
-                            <div class="float-left ml-3">
-                              <div class="form-inline">
-                                <input name="input-3"
-                                       data-size="xm"
-                                       value="{{ item.get_average_rating }}"
-                                       class="rating-loading user-review-star"
-                                       type="button"
-                                >
-                                <a href="{{ item.get_absolute_url }}">
-                                  ( {{ item.get_rating_count }} )
+                              <div class="float-left">
+                                <a href="{{ item.get_absolute_url }}" target="_blank">
+                                  {{ item.name }}
                                 </a>
+                              </div>
+                              <div class="float-left ml-3">
+                                <div class="form-inline">
+                                  <input name="input-3"
+                                         data-size="xm"
+                                         value="{{ item.get_average_rating }}"
+                                         class="rating-loading user-review-star"
+                                         type="button"
+                                  >
+                                  <a href="{{ item.get_absolute_url }}" target="_blank">
+                                    ( {{ item.get_rating_count }} )
+                                  </a>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
+                        {% endfor %}
                       {% endfor %}
-                    {% endfor %}
-                    {% if data.meal_category_data %} <hr> {% endif %}
-                  </div>
-                {% endfor %}
-                <div class="container">
-                  {% if object.dining_items %}
-                    <h5> Extra: </h5>
-                  {% endif %}
-                  {% for item in object.dining_items %}
-                    <div class="row">
-                      <div class="col">
-                        <div class="float-left">
-                          <a href="{{ item.get_absolute_url }}">
-                            {{ item.name }}
-                          </a>
-                        </div>
-                        <div class="float-left ml-3">
-                          <div class="form-inline">
-                            <input name="input-3"
-                                   data-size="xm"
-                                   value="{{ item.get_average_rating }}"
-                                   class="rating-loading user-review-star"
-                                   type="button"
-                            >
+                      {% if data.meal_category_data %} <hr> {% endif %}
+                    </div>
+                  {% endfor %}
+                  <div class="container">
+                    {% if object.dining_items %}
+                      <h5> Extra: </h5>
+                    {% endif %}
+                    {% for item in object.dining_items %}
+                      <div class="row">
+                        <div class="col">
+                          <div class="float-left">
                             <a href="{{ item.get_absolute_url }}">
-                              ( {{ item.get_rating_count }} )
+                              {{ item.name }}
                             </a>
+                          </div>
+                          <div class="float-left ml-3">
+                            <div class="form-inline">
+                              <input name="input-3"
+                                     data-size="xm"
+                                     value="{{ item.get_average_rating }}"
+                                     class="rating-loading user-review-star"
+                                     type="button"
+                              >
+                              <a href="{{ item.get_absolute_url }}">
+                                ( {{ item.get_rating_count }} )
+                              </a>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  {% endfor %}
+                    {% endfor %}
+                  </div>
                 </div>
               </div>
+
+
             </div>
-
-
           </div>
         </div>
-      </div>
-    {% endfor %}
+      {% endfor %}
+    </div>
+
   </div>
   <script>
     $(document).on('ready', function(){

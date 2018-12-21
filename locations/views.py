@@ -23,6 +23,7 @@ class LocationList(ListView):
         # print("context: ", context)
         today = datetime.now().date()
         date = self.request.GET.get('date', today.isoformat())
+        open_today = self.request.GET.get('open_today')
         # print("self.kwargs['date']", date)
         # print("type(date):", type(date))
         object_list_old = context['object_list']
@@ -34,6 +35,9 @@ class LocationList(ListView):
                 'dining_items': [],
             }
             meal_events = MealEvent.objects.filter(operating_hour__date=date, operating_hour__location=location)
+
+            if open_today == 'on' and meal_events.exists() == False: continue
+
             print("meal_events: ", meal_events)
             for event in meal_events:
                 meal_categories = MealCategory.objects.filter(meal_event=event)
@@ -76,8 +80,9 @@ class LocationList(ListView):
         return context
 
     def get_queryset(self):
+        # queryset of the location model
         query = super().get_queryset()
-        area_name = self.request.GET.get('campus_area_short', 'North')
+        area_name = self.request.GET.get('campus_area_short', 'North') # Choosing North as default when nothing is provided
         query = query.filter(campus_area_short__icontains=area_name)
         if area_name: query = query.order_by('-eatery_name')
         # print("self.request.GET:", self.request.GET)
