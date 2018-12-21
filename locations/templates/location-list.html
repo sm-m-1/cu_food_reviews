@@ -4,77 +4,91 @@
   {% if authenticated_user %}
     <h3>Hi, {{ authenticated_user }}</h3>
   {% endif %}
-  <div class="container my-4">
-    <form method="GET" action="{% url 'location_list' %}" class="form-inline my-2 my-lg-0">
-      <input type="checkbox" name="open_today" id="open_today"
-             {% if "on" == request.GET.open_today %}
-               checked
-             {% endif %}
-             onchange="this.form.submit()">
-      <label class="m-1" for="open_today"> Open Today</label>
-      <input type="radio"
-             name="campus_area_short"
-             id="campus_area_north"
-             value="North"
-             checked
-             onchange="this.form.submit()"
-{#              {% if "North" == request.GET.campus_area_short %}#}
-{#             checked#}
-{#              {% endif %}#}
-      >
-      <label for="campus_area_north" class="btn btn-primary mx-2">North</label><br>
-      <input type="radio"
-             name="campus_area_short"
-             id="campus_area_central"
-             value="Central"
-             onchange="this.form.submit()"
-              {% if "Central" == request.GET.campus_area_short %}
-             checked
-              {% endif %}> <label for="campus_area_central" class="btn btn-primary mx-2">Central</label><br>
-      <input type="radio"
-             name="campus_area_short"
-             id="campus_area_west"
-             value="West"
-             onchange="this.form.submit()"
-              {% if "West" == request.GET.campus_area_short %}
-             checked
-              {% endif %}>
-      <label for="campus_area_west" class="btn btn-primary mx-2">West</label><br>
+  <div class="container mt-1 mb-2">
+    <div class="row">
+      <div class="mx-auto">
+        <form method="GET" action="{% url 'location_list' %}" class="form-inline my-2 my-lg-0">
+          <div class="form-group">
+            <input type="checkbox" name="open_today" id="open_today"
+                   {% if "on" == request.GET.open_today %}
+                     checked
+                   {% endif %}
+                   onchange="this.form.submit()">
+            <label class="m-1" for="open_today"> Open Today</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input type="radio"
+                   name="campus_area_short"
+                   id="campus_area_north"
+                   value="North"
+                   checked
+                   onchange="this.form.submit()"
+      {#              {% if "North" == request.GET.campus_area_short %}#}
+      {#             checked#}
+      {#              {% endif %}#}
+            >
+            <label for="campus_area_north" class="btn btn-primary mx-2">North</label><br>
+            <input type="radio"
+                   name="campus_area_short"
+                   id="campus_area_central"
+                   value="Central"
+                   onchange="this.form.submit()"
+                    {% if "Central" == request.GET.campus_area_short %}
+                   checked
+                    {% endif %}> <label for="campus_area_central" class="btn btn-primary mx-2">Central</label><br>
+            <input type="radio"
+                   name="campus_area_short"
+                   id="campus_area_west"
+                   value="West"
+                   onchange="this.form.submit()"
+                    {% if "West" == request.GET.campus_area_short %}
+                   checked
+                    {% endif %}>
+            <label for="campus_area_west" class="btn btn-primary mx-2">West</label><br>
 
-      <input type="radio"
-             name="campus_area_short"
-             id="campus_area_none"
-             value=""
-             onchange="this.form.submit()"
-              {% if "" == request.GET.campus_area_short %}
-             checked
-              {% endif %}>
-      <label for="campus_area_none" class="btn btn-primary mx-2">All</label><br>
+            <input type="radio"
+                   name="campus_area_short"
+                   id="campus_area_none"
+                   value=""
+                   onchange="this.form.submit()"
+                    {% if "" == request.GET.campus_area_short %}
+                   checked
+                    {% endif %}>
+            <label for="campus_area_none" class="btn btn-primary mx-2">All</label><br>
+          </div>
 
-      <label class="mx-3" for="date">Date: </label>
-      <select name="date" id="date" onchange="this.form.submit()">
-        {% for date in date_list %}
-          <option value="{{ date }}"
-                  {% if date == request.GET.date %}
-                  selected
-                  {% endif %}>
-            {{ date }}
-          </option>
-        {% endfor %}
-      </select>
-      {#      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>#}
-    </form>
+          <div class="form-group">
+            <label class="" for="date">Date: </label>
+            <select name="date" id="date" onchange="this.form.submit()">
+              {% for date in date_list %}
+                <option value="{{ date }}"
+                        {% if date == request.GET.date %}
+                        selected
+                        {% endif %}>
+                  {{ date }}
+                </option>
+              {% endfor %}
+            </select>
+
+          </div>
+          {#      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>#}
+        </form>
+
+      </div>
+    </div>
   </div>
   <div class="row">
-    <div id="my_scroll_spy" class="col-md-4">
+    <div id="my_scroll_spy" class="col-md-4 mt-2">
     <div class="sticky-top">
       {% for object in object_list %}
         <a class="d-block" href="#{{ object.location.slug }}"> {{ object.location.eatery_name }}</a>
       {% endfor %}
-
     </div>
     </div>
     <div class="col-md-8" id="">
+      {% if not object_list %}
+        sorry, nothing found :( Try changing criteria.
+      {% endif %}
       {% for object in object_list %}
         <div class="row my-2">
           <div class="col">
