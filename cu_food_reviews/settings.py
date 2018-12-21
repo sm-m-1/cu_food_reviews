@@ -29,7 +29,10 @@ except (KeyError):
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+]
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 20971520
 
@@ -54,6 +57,7 @@ INSTALLED_APPS = [
     'operating_hours',
     'meal_items',
     'accounts',
+    'meal_item_alert',
     'rest_framework',
     'widget_tweaks',
     'django_celery_results',
@@ -175,7 +179,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"), # needed for Django server
-    os.path.join(BASE_DIR, "build/static"), # needed for React app
     # '/var/www/static/',
 ]
 

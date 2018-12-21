@@ -1,4 +1,5 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
 from django.urls import reverse
 from django.views import View
@@ -18,8 +19,9 @@ class ReviewFormPostView(SingleObjectMixin, FormView):
     model = MealItem
 
     def post(self, request, *args, **kwargs):
-        # if not request.user.is_authenticated:
-        #     return HttpResponseForbidden()
+        logged_in = request.user.is_authenticated
+        if not logged_in:
+            return HttpResponseForbidden()
         self.object = self.get_object()
         # if request.session.get(self.object.slug, False):
         #     return HttpResponse("You've already reviewed this item.")
@@ -31,7 +33,8 @@ class ReviewFormPostView(SingleObjectMixin, FormView):
         Review.objects.create(
             rating=data.get('star_rating', 4),
             comment=data.get('comment', ''),
-            menu_item_id=self.object.id
+            menu_item_id=self.object.id,
+            author=self.request.user
         )
         # self.request.session[self.object.slug] = True
         return super().form_valid(form)
@@ -50,7 +53,8 @@ class MealItemDisplay(DetailView):
         context =  super().get_context_data(**kwargs)
         context['form'] = ReviewForm()
         # already_reviewed = self.request.session.get(self.object.slug)
-        # if already_reviewed: context['hide_review_form'] = True
+        already_reviewed = Review.objects.filter(author=self.request.user, menu_item=self.object).exists()
+        if already_reviewed: context['hide_review_form'] = True
         reviews = Review.objects.filter(menu_item_id=self.object)
         context['reviews_list'] = reviews.order_by("-created_on")
         context['average_rating'] = Review.objects.filter(menu_item_id=self.object.id).aggregate(Avg('rating')).get('rating__avg')

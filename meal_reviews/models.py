@@ -1,4 +1,4 @@
-from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.db import models
 from datetime import datetime
 
@@ -10,4 +10,4 @@ class Review(models.Model):
     created_on = models.DateTimeField(default=datetime.now)
     rating = models.IntegerField(default=4, null=True)
     menu_item = models.ForeignKey(MealItem, on_delete=models.CASCADE)
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, null=True)
