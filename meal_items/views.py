@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django.views import View
@@ -20,6 +21,8 @@ class ReviewFormPostView(SingleObjectMixin, FormView):
         # if not request.user.is_authenticated:
         #     return HttpResponseForbidden()
         self.object = self.get_object()
+        if request.session.get(self.object.slug, False):
+            return HttpResponse("You've already reviewed this item.")
         form = self.get_form()
         data = form.data
         Review.objects.create(
@@ -27,6 +30,7 @@ class ReviewFormPostView(SingleObjectMixin, FormView):
             comment=data.get('comment', ''),
             menu_item_id=self.object.id
         )
+        self.request.session[self.object.slug] = True
         return super().post(request, *args, **kwargs)
 
     def get_success_url(self):
@@ -42,7 +46,9 @@ class MealItemDisplay(DetailView):
     def get_context_data(self, **kwargs):
         context =  super().get_context_data(**kwargs)
         context['form'] = ReviewForm()
+        already_reviewed = self.request.session.get(self.object.slug)
         reviews = Review.objects.filter(menu_item_id=self.object)
+        if already_reviewed: context['hide_review_form'] = True
         context['reviews_list'] = reviews.order_by("-created_on")
         context['average_rating'] = Review.objects.filter(menu_item_id=self.object.id).aggregate(Avg('rating')).get('rating__avg')
         print("context: ", context)
