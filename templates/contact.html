@@ -3,42 +3,45 @@
 {% block title %}Contact Us{% endblock %}
 {% block content %}
   <div class="container mt-5">
-    <div class="card center-block" style="width: 35rem;">
-      <h1 class="card-header my-0">Send a message</h1>
-      <div class="card-body">
-        <form method="post">
-          {% csrf_token %}
-{#          {{ form.as_p }}#}
-          <div class="form-group">
-            <label for="{{ form.fullname.id_for_label }}">Full name:</label>
-            {% render_field form.fullname class="form-control" %}
-          </div>
+    <div class="row">
 
-          <div class="form-group">
-            <label for="{{ form.email.id_for_label }}">Email:</label>
-            {% render_field form.email class="form-control" %}
-          </div>
+      <div class="card mx-auto" style="width: 35rem;">
+        <h1 class="card-header my-0">Send a message</h1>
+        <div class="card-body">
+          <form method="post">
+            {% csrf_token %}
+            {#          {{ form.as_p }}#}
+            <div class="form-group">
+              <label for="{{ form.fullname.id_for_label }}">Full name:</label>
+              {% render_field form.fullname class="form-control" %}
+            </div>
 
-          <div class="form-group">
-            <label for="{{ form.subject.id_for_label }}">Subject:</label>
-            {% render_field form.subject class="form-control" %}
-          </div>
+            <div class="form-group">
+              <label for="{{ form.email.id_for_label }}">Email:</label>
+              {% render_field form.email class="form-control" %}
+            </div>
 
-          <div class="form-group">
-            <label for="{{ form.content.id_for_label }}">Message:</label>
-            {% render_field form.content class="form-control" %}
-          </div>
+            <div class="form-group">
+              <label for="{{ form.subject.id_for_label }}">Subject:</label>
+              {% render_field form.subject class="form-control" %}
+            </div>
 
-          <div class="form-group">
-            <h6 class="text-danger list-group-item-danger">
-{#              {{ form.errors }}#}
-              {{ form.fullname.errors }}
-              {{ form.non_field_errors }}
-            </h6>
-          </div>
+            <div class="form-group">
+              <label for="{{ form.content.id_for_label }}">Message:</label>
+              {% render_field form.content class="form-control" %}
+            </div>
 
-          <button type="submit" class="btn btn-primary">Send Message</button>
-        </form>
+            <div class="form-group">
+              <h6 class="text-danger list-group-item-danger">
+                {#              {{ form.errors }}#}
+                {{ form.fullname.errors }}
+                {{ form.non_field_errors }}
+              </h6>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Send Message</button>
+          </form>
+        </div>
       </div>
     </div>
   </div>

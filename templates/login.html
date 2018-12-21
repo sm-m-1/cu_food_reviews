@@ -1,8 +1,11 @@
 {% extends "base.html" %}
 {% load widget_tweaks %}
+{% block title %} Login {% endblock %}
+
 {% block content %}
   <div class="container mt-5">
-    <div class="card center-block" style="width: 35rem;">
+  <div class="row">
+    <div class="card mx-auto" style="width: 35rem;">
       <h1 class="card-header my-0">Login</h1>
       <div class="card-body">
         <form method="post">
@@ -28,48 +31,14 @@
 
           <button type="submit" class="btn btn-primary">Login</button>
           <div class="mt-3">
-            <p><a href="{% url 'password_reset' %}">Forgot password?</a>
+            <a class="float-left" href="{% url 'password_reset' %}">Forgot password?</a>
+            <a class="float-right" href="{% url 'signup' %}">Create an account.</a>
           </div>
         </form>
       </div>
     </div>
+
+  </div>
   </div>
 
 {% endblock %}
-
-{#{% block content %}#}
-{##}
-{#{% if form.errors %}#}
-{#<p>Your username and password didn't match. Please try again.</p>#}
-{#{% endif %}#}
-{##}
-{#{% if next %}#}
-{#    {% if user.is_authenticated %}#}
-{#    <p>Your account doesn't have access to this page. To proceed,#}
-{#    please login with an account that has access.</p>#}
-{#    {% else %}#}
-{#    <p>Please login to see this page.</p>#}
-{#    {% endif %}#}
-{#{% endif %}#}
-{##}
-{#<form method="post" action="">#}
-{#{% csrf_token %}#}
-{#<table>#}
-{#<tr>#}
-{#    <td>{{ form.username.label_tag }}</td>#}
-{#    <td>{{ form.username }}</td>#}
-{#</tr>#}
-{#<tr>#}
-{#    <td>{{ form.password.label_tag }}</td>#}
-{#    <td>{{ form.password }}</td>#}
-{#</tr>#}
-{#</table>#}
-{##}
-{#<input type="submit" value="login">#}
-{#<input type="hidden" name="next" value="{{ next }}">#}
-{#</form>#}
-{##}
-{# Assumes you setup the password_reset view in your URLconf #}
-{#<p><a href="{% url 'password_reset' %}">Lost password?</a></p>#}
-{##}
-{#{% endblock %}#}
