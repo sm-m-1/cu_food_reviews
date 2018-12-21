@@ -9,6 +9,7 @@ from operating_hours.models import OperatingHour
 from meal_events.models import MealEvent
 from meal_items.models import MealItem
 from datetime import datetime, timedelta, date
+from django.utils import timezone
 from rest_framework.views import APIView
 from rest_framework import routers, serializers, viewsets, generics, renderers
 
@@ -20,7 +21,8 @@ class LocationList(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(object_list=object_list, **kwargs)
         # print("context: ", context)
-        date = self.request.GET.get('date', '2018-12-01')
+        today = datetime.now().date()
+        date = self.request.GET.get('date', today.isoformat())
         # print("self.kwargs['date']", date)
         # print("type(date):", type(date))
         object_list_old = context['object_list']
@@ -32,7 +34,7 @@ class LocationList(ListView):
                 'dining_items': [],
             }
             meal_events = MealEvent.objects.filter(operating_hour__date=date, operating_hour__location=location)
-            # print("meal_events: ", meal_events)
+            print("meal_events: ", meal_events)
             for event in meal_events:
                 meal_categories = MealCategory.objects.filter(meal_event=event)
                 meal_category_data = []
@@ -45,7 +47,7 @@ class LocationList(ListView):
                             meal_category__meal_event=event,
                             meal_category=category,
                             meal_location=location
-                        )
+                        ).order_by('name')
                     }
                     meal_category_data.append(data)
 
@@ -57,16 +59,15 @@ class LocationList(ListView):
                 }
                 info['location_data'].append(data)
 
-            dining_items = MealItem.objects.filter(meal_location=location, is_dining_item=True)
+            dining_items = MealItem.objects.filter(meal_location=location, is_dining_item=True).order_by('name')
             info['dining_items'] = dining_items
             object_list_new.append(info)
             # break
         context['object_list'] = object_list_new
         # print("context: ", context)
-        temp_start_date = "2018-12-01"
-        start_date = datetime.strptime(temp_start_date, "%Y-%m-%d").date()
-        # end_date = start_date + timedelta(days=7)
-        next_seven_days = [( start_date + timedelta(days=i) ).isoformat() for i in range(7)]
+        # temp_start_date = "2018-12-01"
+        # start_date = datetime.strptime(temp_start_date, "%Y-%m-%d").date()
+        next_seven_days = [( today + timedelta(days=i) ).isoformat() for i in range(7)]
         # context['start_date'] = start_date.isoformat()
         # context['end_date'] = end_date.isoformat()
         context['date_list'] = next_seven_days

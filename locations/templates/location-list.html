@@ -64,7 +64,7 @@
 {#      <a class="d-block" href="#{{ object.location.slug }}"> {{ object.location.eatery_name }}</a>#}
 {#    {% endfor %}#}
 {#  </div>#}
-  <div class="accordion" id="accordionExample">
+  <div class="" id="">
     {% for object in object_list %}
       <div class="row my-2">
         <div class="col">
@@ -78,21 +78,27 @@
                       {{ object.location.eatery_name }}
                     </h3>
                   </div>
-                  <div class="float-left ml-5 mt-3">
-                    <button id="{{ object.location.slug }}" onclick="myFunction(this.id)" class="btn btn-primary show-hide-menu-button" type="button" data-toggle="collapse" data-target="#collapse-{{ forloop.counter }}" aria-expanded="false" aria-controls="collapse-{{ forloop.counter }}">
-                      Menu +
-                    </button>
-                  </div>
                 </div>
               </div>
               <div class="row">
                 <div class="col">
-                  <p>{{ object.location.about_short }}</p>
+                  <h6>{{ object.location.about_short }}</h6>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                    {% for data in object.location_data %}
+                      <p class="d-inline-block border-right-0 mr-3 ml-1 small_font">
+                        {{ data.event }}:
+                        {{ data.event.start_time }} -
+                        {{ data.event.end_time }}
+                      </p>
+                    {% endfor %}
                 </div>
               </div>
 
             </div>
-            <div id="collapse-{{ forloop.counter }}" class="collapse" aria-labelledby="heading-{{ forloop.counter }}" data-parent="#accordionExample">
+            <div id="">
               <div class="card-body">
                 {% for data in object.location_data %}
                   <div class="container">
@@ -178,27 +184,6 @@
     $(document).on('ready', function(){
       $('.user-review-star').rating({displayOnly: true, step: 0.0, showCaption: false});
     });
-    function myFunction(clicked_id) {
-      current = document.getElementById(clicked_id).innerHTML;
-      {#console.log("test: " + document.getElementById(clicked_id).innerHTML);#}
-      all_buttons = document.getElementsByClassName("show-hide-menu-button");
-      if (current.includes("Menu +")) {
-        document.getElementById(clicked_id).innerHTML = "Menu -";
-        for(var i = 0; i < all_buttons.length; i++) {
-          if (all_buttons[i].id !== clicked_id) {
-            all_buttons[i].innerHTML = "Menu +";
-          }
-        }
-      } else {
-        document.getElementById(clicked_id).innerHTML = "Menu +";
-        if (current !== "Menu -") {
-          for(var i = 0; i < all_buttons.length; i++) {
-            if (all_buttons[i].id !== clicked_id) {
-              all_buttons[i].innerHTML = "Menu -";
-            }
-          }
-        }
-      }
-    }
+
   </script>
 {% endblock content %}
