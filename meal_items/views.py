@@ -23,15 +23,18 @@ class ReviewFormPostView(SingleObjectMixin, FormView):
         self.object = self.get_object()
         if request.session.get(self.object.slug, False):
             return HttpResponse("You've already reviewed this item.")
-        form = self.get_form()
-        data = form.data
+
+        return super().post(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        data = form.cleaned_data
         Review.objects.create(
             rating=data.get('star_rating', 4),
             comment=data.get('comment', ''),
             menu_item_id=self.object.id
         )
         self.request.session[self.object.slug] = True
-        return super().post(request, *args, **kwargs)
+        return super().form_valid(form)
 
     def get_success_url(self):
         return reverse('meal_item', kwargs={'item_slug': self.object.slug})
