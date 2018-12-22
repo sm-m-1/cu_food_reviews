@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
   <div class="container mt-3">
-    <div class="row {% if hide_review_form %} d-none {% endif %}">
+    <div class="row">
       <div class="col">
         <h4>Create review for: </h4>
         <h6>{{ object.name }} <span class="small_font">@ {{ object.meal_location }}</span></h6>
@@ -20,10 +20,6 @@
   </div>
 
   <script>
-    $(document).on('ready', function(){
-        $('.user-review-star').rating({displayOnly: true, step: 0.0});
-
-    });
 
   </script>
 

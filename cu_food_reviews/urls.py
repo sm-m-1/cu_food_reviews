@@ -25,7 +25,7 @@ from django.contrib.auth import views as auth_views
 # auth_views.PasswordResetDoneView
 
 from locations.views import LocationList
-from meal_items.views import MealItemDetailView, ReviewFormView, meal_item_review_success
+from meal_items.views import MealItemDetailView
 from accounts.views import (
     LoginFormView,
     SignUpFormView,
@@ -36,6 +36,9 @@ from accounts.views import (
     ContactFormView
 )
 
+from meal_reviews.views import ReviewFormView, meal_item_review_success
+from meal_item_alert.views import meal_item_alert_success, MealItemAlertFormView
+
 from home.views import HomePageView
 
 urlpatterns = [
@@ -44,9 +47,13 @@ urlpatterns = [
     path('locations/', LocationList.as_view(), name='location_list'),
     path('contact/', ContactFormView.as_view(), name='contact_page'),
     path('contact/success', contact_page_success, name='contact_page_success'),
+
     path('items/<slug:item_slug>', MealItemDetailView.as_view(), name='meal_item'),
     path('items/create-review/<slug:item_slug>', ReviewFormView.as_view(), name='meal_item_review'),
     path('create-review/success', meal_item_review_success, name='meal_item_review_success'),
+
+    path('items/create-alert/<slug:item_slug>', MealItemAlertFormView.as_view(), name='meal_item_alert'),
+    path('create-alert/success', meal_item_alert_success, name='meal_item_alert_success'),
 
     path('accounts/signup', SignUpFormView.as_view(), name='signup'),
     path('accounts/login', LoginFormView.as_view(), name='login'),
