@@ -7,7 +7,8 @@ from django.urls import reverse_lazy
 
 from meal_items.models import MealItem
 from .forms import AlertForm
-from .models import Alert
+from .models import Alert, user_did_not_create_alert_for_item
+
 
 class MealItemAlertFormView(SingleObjectMixin, FormView):
     template_name = 'meal-item-alert-form.html'
@@ -35,6 +36,12 @@ class MealItemAlertFormView(SingleObjectMixin, FormView):
 
     def get_success_url(self):
         return reverse('meal_item_alert_success')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_did_not_create_alert'] = user_did_not_create_alert_for_item(self.request.user, self.object)
+        return context
+
 
 class MealItemAlertDeleteView(DeleteView):
     model = Alert

@@ -4,7 +4,7 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import DetailView, FormView, DeleteView, UpdateView
 from django.views.generic.detail import SingleObjectMixin
 
-from .models import MealItem
+from .models import MealItem, user_has_not_reviewed_item
 from meal_reviews.models import Review
 from meal_reviews.forms import ReviewForm
 
@@ -35,6 +35,11 @@ class ReviewFormView(SingleObjectMixin, FormView):
         new_review.user = self.request.user
         new_review.save()
         return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_has_not_reviewed_item'] = user_has_not_reviewed_item(self.request.user, self.object)
+        return context
 
     def get_success_url(self):
         return reverse('meal_item_review_success')

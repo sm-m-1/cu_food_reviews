@@ -16,3 +16,7 @@ class Alert(models.Model):
     def get_delete_url(self):
         # return "/products/{slug}/".format(slug=self.slug)
         return reverse("meal_item_alert_delete", kwargs={"id": self.id})
+
+
+def user_did_not_create_alert_for_item(user, menu_item):
+    return not Alert.objects.filter(user=user, menu_item=menu_item).exists()

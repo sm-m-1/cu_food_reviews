@@ -22,3 +22,6 @@ class Review(models.Model):
 
     def get_update_url(self):
         return reverse("review_item_update", kwargs={"id": self.id})
+
+def user_has_not_reviewed_item(user, menu_item):
+    return not Review.objects.filter(user=user, menu_item=menu_item).exists()
