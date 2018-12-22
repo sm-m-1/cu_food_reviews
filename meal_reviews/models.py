@@ -8,7 +8,7 @@ from django.urls import reverse
 from meal_items.models import MealItem
 
 class Review(models.Model):
-    comment = models.TextField(null=True)
+    comment = models.TextField(null=True, blank=True)
     created_on = models.DateTimeField(default=datetime.now)
     rating = models.IntegerField(null=False)
     menu_item = models.ForeignKey(MealItem, on_delete=models.CASCADE)
