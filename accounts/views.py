@@ -17,8 +17,27 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
-# Create your views here.
 from cu_food_reviews import settings
+from meal_item_alert.models import Alert
+from meal_reviews.models import Review
+
+
+class AlertsListView(generic.ListView):
+    model = Alert
+    template_name = 'account-alerts-list.html'
+
+    def get_queryset(self):
+        queryset = super().get_queryset().filter(user=self.request.user)
+        return queryset
+
+
+class ReviewsListView(generic.ListView):
+    model = Review
+    template_name = 'reviews-list.html'
+
+    def get_queryset(self):
+        queryset = super().get_queryset().filter(user=self.request.user)
+        return queryset
 
 
 class SignUpFormView(generic.FormView):
