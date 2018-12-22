@@ -15,8 +15,17 @@
           <a class="nav-link" href="{% url 'location_list' %}">Locations</a>
         </li>
         {% if request.user.is_authenticated %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              My Account
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="{% url 'meal_items_alert_list' %}">My Alerts</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{% url 'meal_reviews_list' %}">My Reviews</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+            </div>
           </li>
         {% else %}
           <li class="nav-item">
