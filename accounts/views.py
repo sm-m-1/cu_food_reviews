@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
+from django.template import loader, Context
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.views import generic
@@ -20,6 +21,7 @@ from django.core.mail import send_mail
 from cu_food_reviews import settings
 from meal_item_alert.models import Alert
 from meal_reviews.models import Review
+from django.core.mail import EmailMultiAlternatives
 
 
 class AlertsListView(generic.ListView):
@@ -71,22 +73,23 @@ class SignUpFormView(generic.FormView):
 
         current_site = get_current_site(self.request)
         mail_subject = 'Activate your Cornell Food account.'
-        message = render_to_string('account_activation_email.html', {
+        to_email = [str(new_user.email)]
+        from_email = settings.DEFAULT_FROM_EMAIL
+        email_context = {
             'user': new_user,
             'domain': current_site.domain,
             'uid': uid,
             'utoken': token,
-        })
-        print("message: ", message)
-        to_email = [str(new_user.email)]
-        print("to_email: ", to_email)
-        send_mail(
-            mail_subject,
-            message,
-            settings.DEFAULT_FROM_EMAIL,
-            to_email,
-            fail_silently=False
+        }
+        html = loader.get_template('account_activation_email_2.html')
+        html_content = html.render(email_context)
+        msg = EmailMultiAlternatives(
+            subject=mail_subject,
+            from_email=from_email,
+            to=[to_email]
         )
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()
         return valid
 
     def get_context_data(self, **kwargs):
