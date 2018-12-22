@@ -1,8 +1,9 @@
 from django.http import HttpResponseForbidden, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
-from django.views.generic import FormView
+from django.views.generic import FormView, DeleteView
 from django.views.generic.detail import SingleObjectMixin
+from django.urls import reverse_lazy
 
 from meal_items.models import MealItem
 from .forms import AlertForm
@@ -34,6 +35,16 @@ class MealItemAlertFormView(SingleObjectMixin, FormView):
 
     def get_success_url(self):
         return reverse('meal_item_alert_success')
+
+class MealItemAlertDeleteView(DeleteView):
+    model = Alert
+    pk_url_kwarg = 'id'
+    success_url = reverse_lazy('meal_items_alert_list')
+    template_name = 'alert_confirm_delete.html'
+    # def get_object(self, queryset=None):
+    #     id_ = self.kwargs.get('id')
+    #     return super().get_object(queryset)
+
 
 def meal_item_alert_success(request):
     return render(request, template_name='meal-item-alert-success.html')

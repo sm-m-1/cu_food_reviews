@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.urls import reverse
 
 from meal_items.models import MealItem
 
@@ -11,3 +12,7 @@ class Alert(models.Model):
 
     def __str__(self):
         return "{} at {}".format( self.meal_item.name, str(self.meal_item.meal_location) )
+
+    def get_delete_url(self):
+        # return "/products/{slug}/".format(slug=self.slug)
+        return reverse("meal_item_alert_delete", kwargs={"id": self.id})
