@@ -77,12 +77,15 @@
       </div>
     </div>
   </div>
+
   <div class="row">
-    <div id="my_scroll_spy" class="col-md-4 mt-2">
+    <div id="home_scroll_spy" class="col-md-4 mt-2">
       <div class="sticky-top">
-        {% for object in object_list %}
-          <a class="d-block" href="#{{ object.location.slug }}"> {{ object.location.eatery_name }}</a>
-        {% endfor %}
+        <div id="" class="list-group">
+          {% for object in object_list %}
+            <a class="list-group-item list-group-item-action" id="scroll_spy_padding" href="#{{ object.location.slug }}"> {{ object.location.eatery_name }}</a>
+          {% endfor %}
+        </div>
       </div>
     </div>
     <div class="col-md-8" id="">
