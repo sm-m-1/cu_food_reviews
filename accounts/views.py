@@ -142,9 +142,9 @@ class UserActivationView(generic.TemplateView):
         if user is not None and default_token_generator.check_token(user, token):
             user.is_active = True
             user.save()
-            context['message'] = 'Thank you for your email confirmation. You can now login to your account.'
+            context['message'] = 'Thank you for your email verification. You can now login to your account.'
         else:
-            context['message'] = 'Failed. Email activation link is invalid!'
+            context['message'] = 'Failed. Email verification link is invalid!'
         return context
 
 
