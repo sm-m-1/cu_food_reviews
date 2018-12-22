@@ -20,7 +20,7 @@ class ReviewFormView(SingleObjectMixin, FormView):
         logged_in = request.user.is_authenticated
         if not logged_in: return HttpResponseForbidden()
 
-        already_reviewed = Review.objects.filter(user=request.user, menu_item=self.object).exists()
+        already_reviewed = Review.objects.filter(user=request.user, meal_item=self.object).exists()
         if already_reviewed: return HttpResponse("You've already reviewed this item. You can edit it in My Accounts section.")
 
         return super().post(request, *args, **kwargs)
@@ -31,7 +31,7 @@ class ReviewFormView(SingleObjectMixin, FormView):
 
     def form_valid(self, form):
         new_review = form.save(commit=False)
-        new_review.menu_item_id = self.object.id
+        new_review.meal_item_id = self.object.id
         new_review.user = self.request.user
         new_review.save()
         return super().form_valid(form)

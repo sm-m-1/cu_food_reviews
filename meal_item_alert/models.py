@@ -18,5 +18,5 @@ class Alert(models.Model):
         return reverse("meal_item_alert_delete", kwargs={"id": self.id})
 
 
-def user_did_not_create_alert_for_item(user, menu_item):
-    return not Alert.objects.filter(user=user, menu_item=menu_item).exists()
+def user_did_not_create_alert_for_item(user, meal_item):
+    return not Alert.objects.filter(user=user, meal_item=meal_item).exists()

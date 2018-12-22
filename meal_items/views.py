@@ -20,11 +20,11 @@ class MealItemDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context =  super().get_context_data(**kwargs)
-        reviews = Review.objects.filter(menu_item_id=self.object)
+        reviews = Review.objects.filter(meal_item_id=self.object)
         context['reviews_list'] = reviews.order_by("-created_on")
         context['create_review_url'] = reverse('meal_item_review', kwargs={'item_slug': self.object.slug})
         context['create_alert_url'] = reverse('meal_item_alert', kwargs={'item_slug': self.object.slug})
-        context['average_rating'] = Review.objects.filter(menu_item_id=self.object.id).aggregate(Avg('rating')).get('rating__avg')
+        context['average_rating'] = Review.objects.filter(meal_item_id=self.object.id).aggregate(Avg('rating')).get('rating__avg')
         print("context: ", context)
         return context
 

@@ -18,5 +18,5 @@ def upload_image_path(instance, filename):
 
 class Photo(models.Model):
     image = models.ImageField(upload_to=upload_image_path, null=True, blank=True)
-    menu_item = models.ForeignKey(MealItem, on_delete=models.CASCADE)
+    meal_item = models.ForeignKey(MealItem, on_delete=models.CASCADE)
     liked = models.IntegerField(null=True, blank=True)
