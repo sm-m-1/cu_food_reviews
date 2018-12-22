@@ -12,16 +12,8 @@
     </div>
     <div class="row {% if hide_review_form %} d-none {% endif %}">
       <div class="col">
-        <h4>Leave a rating: </h4>
-        <form method="POST" class="post-form" action="{% url 'meal_item' item_slug=object.slug %}">
-          {% csrf_token %}
-{#          {{ form }}#}
-          {{ form.star_rating }}
-          {{ form.comment }}
-          <button type="submit" class="btn btn-primary">Submit</button>&nbsp;
-          <button type="reset" class="btn btn-outline-secondary">Reset</button>
-          <span class="text-danger"> {{ form.errors }}</span>
-        </form>
+        <a href="{{ create_review_url }}"> Review</a>
+        <a href=""> Create Alert</a>
         <hr>
       </div>
     </div>
@@ -42,10 +34,12 @@
   </div>
 
   <script>
-$(document).on('ready', function(){
-    $('.user-review-star').rating({displayOnly: true, step: 0.0});
-});
-</script>
+    $(document).on('ready', function(){
+        $('.user-review-star').rating({displayOnly: true, step: 0.0});
+
+    });
+
+  </script>
 
 {% endblock content %}
 

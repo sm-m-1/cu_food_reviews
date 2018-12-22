@@ -25,7 +25,7 @@ from django.contrib.auth import views as auth_views
 # auth_views.PasswordResetDoneView
 
 from locations.views import LocationList
-from meal_items.views import MealItemDetail
+from meal_items.views import MealItemDetailView, ReviewFormView, meal_item_review_success
 from accounts.views import (
     LoginFormView,
     SignUpFormView,
@@ -44,7 +44,9 @@ urlpatterns = [
     path('locations/', LocationList.as_view(), name='location_list'),
     path('contact/', ContactFormView.as_view(), name='contact_page'),
     path('contact/success', contact_page_success, name='contact_page_success'),
-    path('home/items/<slug:item_slug>', MealItemDetail.as_view(), name='meal_item'),
+    path('items/<slug:item_slug>', MealItemDetailView.as_view(), name='meal_item'),
+    path('items/create-review/<slug:item_slug>', ReviewFormView.as_view(), name='meal_item_review'),
+    path('create-review/success', meal_item_review_success, name='meal_item_review_success'),
 
     path('accounts/signup', SignUpFormView.as_view(), name='signup'),
     path('accounts/login', LoginFormView.as_view(), name='login'),
