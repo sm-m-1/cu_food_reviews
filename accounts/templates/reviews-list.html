@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="container mt-3">
+    <div class="row">
+      <div class="col">
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <h3>Your reviews are shown below. You can remove them from here if you wish.</h3>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="card mx-auto">
+          <h3 class="card-header"> Your reviews: </h3>
+          <div class="list-group">
+          {% if not object_list %}
+            <h3 class="m-3"> You have not created any reviews yet. </h3>
+          {% endif %}
+          {% for object in object_list %}
+            <div class="list-group-item">
+              <p class="d-inline-block">{{ object }}.
+                <span class="badge badge-primary badge-pill">{{ object.rating }}/5</span>
+              </p>
+              <a role="button" class="d-inline-block btn btn-outline-danger float-right" href="{{ object.get_delete_url }}"> Delete</a>
+              <a role="button" class="d-inline-block btn btn-outline-info mr-2 float-right" href="{{ object.get_update_url }}"> Update</a>
+            </div>
+          {% endfor %}
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+
+  </script>
+
+{% endblock content %}
