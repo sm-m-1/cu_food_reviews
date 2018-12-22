@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load widget_tweaks %}
 {% block content %}
   <div class="container mt-3">
     <div class="row">
@@ -8,8 +9,13 @@
         <form method="POST" class="post-form" action="{% url 'meal_item_review' item_slug=object.slug %}">
           {% csrf_token %}
 {#          {{ form }}#}
-          {{ form.star_rating }}
-          {{ form.comment }}
+          <div class="form-group">
+            {% render_field form.rating class="rating rating-loading" data-min="0" data-max="5" data-step="1"%}
+          </div>
+          <div class="form-group">
+            <label for="{{ form.comment.id_for_label }}">Comments:</label>
+            {% render_field form.comment class="form-control my-2" data-size="sm"%}
+          </div>
           <button type="submit" class="btn btn-primary">Submit</button>&nbsp;
           <button type="reset" class="btn btn-outline-secondary">Reset</button>
           <span class="text-danger"> {{ form.errors }}</span>

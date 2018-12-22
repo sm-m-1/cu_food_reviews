@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render
-from django.urls import reverse
-from django.views.generic import DetailView, FormView
+from django.urls import reverse, reverse_lazy
+from django.views.generic import DetailView, FormView, DeleteView, UpdateView
 from django.views.generic.detail import SingleObjectMixin
 
 from .models import MealItem
@@ -20,7 +20,7 @@ class ReviewFormView(SingleObjectMixin, FormView):
         logged_in = request.user.is_authenticated
         if not logged_in: return HttpResponseForbidden()
 
-        already_reviewed = Review.objects.filter(author=request.user, menu_item=self.object).exists()
+        already_reviewed = Review.objects.filter(user=request.user, menu_item=self.object).exists()
         if already_reviewed: return HttpResponse("You've already reviewed this item.")
 
         return super().post(request, *args, **kwargs)
@@ -35,7 +35,7 @@ class ReviewFormView(SingleObjectMixin, FormView):
             rating=data.get('star_rating', 4),
             comment=data.get('comment', ''),
             menu_item_id=self.object.id,
-            author=self.request.user
+            user=self.request.user
         )
         return super().form_valid(form)
 
@@ -44,3 +44,19 @@ class ReviewFormView(SingleObjectMixin, FormView):
 
 def meal_item_review_success(request):
     return render(request, template_name='meal-item-review-success.html')
+
+
+class ReviewDeleteView(DeleteView):
+    model = Review
+    pk_url_kwarg = 'id'
+    success_url = reverse_lazy('meal_reviews_list')
+    template_name = 'review_confirm_delete.html'
+
+
+class ReviewUpdateView(UpdateView):
+    model = Review
+    pk_url_kwarg = 'id'
+    success_url = reverse_lazy('meal_reviews_list')
+    template_name = 'review_update_form.html'
+    # fields = ['rating', 'comment']
+    form_class = ReviewForm
