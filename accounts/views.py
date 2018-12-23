@@ -94,7 +94,7 @@ class SignUpFormView(generic.FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
+        context['domain'] = get_current_site(self.request)
         return context
 
     def get_success_url(self):
@@ -119,6 +119,11 @@ def signup_success(request):
 
 class LoginFormView(LoginView):
     template_name ='login.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['domain'] = get_current_site(self.request)
+        return context
 
 class LogoutFormView(LogoutView):
     next_page = 'login'

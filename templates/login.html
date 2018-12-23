@@ -29,8 +29,15 @@
             </div>
           {% endif %}
 
-          <button type="submit" class="btn btn-primary">Login</button>
-          <div class="mt-3">
+          <div class="clearfix">
+            <button type="submit" class="btn btn-primary float-left">Login</button>
+
+            <a class="float-right" href="http://{{ domain }}/accounts/google/login/">
+              <img class="google_sign_in_logo" src="/static/google_sign_in_logo.png" alt="google_sign_in_logo">
+            </a>
+          </div>
+
+          <div class="mt-3 clear">
             <a class="float-left" href="{% url 'password_reset' %}">Forgot password?</a>
             <a class="float-right" href="{% url 'signup' %}">Create an account.</a>
           </div>
