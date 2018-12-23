@@ -3,42 +3,45 @@
 {% block content %}
   <div class="container mt-3">
     <div class="row">
-      <div class="col">
-        {% if user_did_not_create_alert %}
-          <h4>Create email alert for: </h4>
-          <h6>{{ object.name }} <span class="small_font">@ {{ object.meal_location }}</span></h6>
-          <form method="POST" class="post-form" action="{% url 'meal_item_alert' item_slug=object.slug %}">
-            {% csrf_token %}
-            <div class="form-group">
-              <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <strong>Hi there!</strong>
-                <h6>
-                  If you check the field below and submit then we will send you an email reminder on the days
-                when this item is available at {{ object.meal_location }} in future.
-                </h6>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
+      <div class="card mx-auto my-2" style="width: 35rem;">
+        <div class="card-body">
+          {% if user_did_not_create_alert %}
+            <h4>Create email alert for: </h4>
+            <h6>{{ object.name }} <span class="small_font">@ {{ object.meal_location }}</span></h6>
+            <form method="POST" class="post-form" action="{% url 'meal_item_alert' item_slug=object.slug %}">
+              {% csrf_token %}
+              <div class="form-group">
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                  <strong>Hi there!</strong>
+                  <h6>
+                    If you check the field below and submit then we will send you an email reminder on the days
+                  when this item is available at {{ object.meal_location }} in future.
+                  </h6>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                {{ form.active }}
+                <label class="" for="{{ form.active.id_for_label }}"> Enable </label>
               </div>
-              {{ form.active }}
-              <label class="" for="{{ form.active.id_for_label }}"> Enable </label>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>&nbsp;
-            <span class="text-danger"> {{ form.errors }}</span>
-          </form>
+              <button type="submit" class="btn btn-primary">Submit</button>&nbsp;
+              <span class="text-danger"> {{ form.errors }}</span>
+            </form>
 
-        {% else %}
-          <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <h6>
-              You have already created email alert for this item. You can go to My Account section to
-              update your alert settings.
-            </h6>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-        {% endif %}
-        <hr>
+          {% else %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <h6>
+                You have already created email alert for this item. You can go to My Account section to
+                update your alert settings.
+              </h6>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          {% endif %}
+          <hr>
+
+        </div>
       </div>
     </div>
   </div>
