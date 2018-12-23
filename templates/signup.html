@@ -32,8 +32,12 @@
                 {{ form.non_field_errors }}
               </h6>
             </div>
-
-            <button type="submit" class="btn btn-primary">Sign Up</button>
+            <div class="clearfix">
+              <button type="submit" class="btn btn-primary float-left">Sign Up</button>
+              <a class="float-right" href="http://{{ domain }}/accounts/google/login/">
+                <img class="google_sign_in_logo" src="/static/google_sign_in_logo.png" alt="google_sign_in_logo">
+              </a>
+            </div>
           </form>
         </div>
       </div>

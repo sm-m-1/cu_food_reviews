@@ -64,10 +64,10 @@ urlpatterns = [
     path('alerts-list/', AlertsListView.as_view(), name='meal_items_alert_list'),
 
     # account signup
-    path('accounts/signup', SignUpFormView.as_view(), name='signup'),
-    path('accounts/login', LoginFormView.as_view(), name='login'),
-    path('accounts/logout', LogoutFormView.as_view(), name='logout'),
-    path('accounts/signup/success', signup_success, name='signup_success'),
+    path('accounts/signup/', SignUpFormView.as_view(), name='signup'),
+    path('accounts/login/', LoginFormView.as_view(), name='login'),
+    path('accounts/logout/', LogoutFormView.as_view(), name='logout'),
+    path('accounts/signup/success/', signup_success, name='signup_success'),
     path('accounts/signup/activate/', UserActivationView.as_view(), name='user_activate'),
 
     # account reset
@@ -75,4 +75,7 @@ urlpatterns = [
     path('accounts/password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
     path('accounts/password_reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('accounts/reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+
+    # allauth
+    path('accounts/', include('allauth.urls')),
 ]
