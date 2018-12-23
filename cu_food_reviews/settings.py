@@ -70,6 +70,7 @@ INSTALLED_APPS = [
     'django_celery_beat',
 ]
 
+# django allauth settings
 SITE_ID = 1
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -83,6 +84,7 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
+# django allauth settings end
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
