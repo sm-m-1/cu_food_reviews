@@ -17,7 +17,7 @@
           <a href="{{ create_alert_url }}" role="button" class="btn btn-outline-primary"> Create Alert</a>
         {% else %}
           <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <h6>Login to create a review. </h6>
+            <h6><a href="{% url 'login' %}?next={{request.path}}">Sign in</a> to create a review. </h6>
             <h6>Or to setup alerts for {{ object.name }} @ {{ object.meal_location }}</h6>
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
               <span aria-hidden="true">&times;</span>
