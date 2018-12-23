@@ -34,7 +34,7 @@ from accounts.views import (
     contact_page_success,
     UserActivationView,
     ContactFormView,
-    AlertsListView, ReviewsListView)
+    AlertsListView, ReviewsListView, GoogleLoginView)
 
 from meal_reviews.views import ReviewFormView, meal_item_review_success, ReviewDeleteView, ReviewUpdateView
 from meal_item_alert.views import meal_item_alert_success, MealItemAlertFormView, MealItemAlertDeleteView
@@ -63,19 +63,8 @@ urlpatterns = [
     path('alerts/<id>/delete', MealItemAlertDeleteView.as_view(), name='meal_item_alert_delete'),
     path('alerts-list/', AlertsListView.as_view(), name='meal_items_alert_list'),
 
-    # account signup
-    path('accounts/signup/', SignUpFormView.as_view(), name='signup'),
-    path('accounts/login/', LoginFormView.as_view(), name='login'),
-    path('accounts/logout/', LogoutFormView.as_view(), name='logout'),
-    path('accounts/signup/success/', signup_success, name='signup_success'),
-    path('accounts/signup/activate/', UserActivationView.as_view(), name='user_activate'),
-
-    # account reset
-    path('accounts/password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
-    path('accounts/password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
-    path('accounts/password_reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
-    path('accounts/reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
-
     # allauth
     path('accounts/', include('allauth.urls')),
+    path('logout/', LogoutFormView.as_view(), name='logout'),
+    path('login/', GoogleLoginView.as_view(), name='login')
 ]

@@ -1,27 +1,32 @@
 from django.contrib.auth.models import User
-from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
-from django.template import loader, Context
-from django.template.loader import render_to_string
-from django.urls import reverse_lazy
-from django.views import generic
-from django.views import View
-from accounts.forms import SignUpForm, LoginForm, ContactForm
-from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
-from django.utils.encoding import force_text
-from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.views import LoginView, LogoutView
-from django.urls import reverse
-from django.contrib.auth.tokens import default_token_generator
-from django.utils.http import urlsafe_base64_encode
-from django.utils.encoding import force_bytes
 from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import EmailMultiAlternatives
 from django.core.mail import send_mail
+from django.shortcuts import render
+from django.template import loader
+from django.template.loader import render_to_string
+from django.urls import reverse
+from django.utils.encoding import force_bytes
+from django.utils.encoding import force_text
+from django.utils.http import urlsafe_base64_decode
+from django.utils.http import urlsafe_base64_encode
+from django.views import generic
+
+from accounts.forms import SignUpForm, ContactForm
 from cu_food_reviews import settings
 from meal_item_alert.models import Alert
 from meal_reviews.models import Review
-from django.core.mail import EmailMultiAlternatives
+
+
+class GoogleLoginView(generic.TemplateView):
+    template_name = 'google-login-link.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['domain'] = get_current_site(self.request)
+        return context
 
 
 class AlertsListView(generic.ListView):
@@ -116,6 +121,7 @@ def signup_success(request):
 #
 #     def get_success_url(self):
 #         return reverse("location_list")
+
 
 class LoginFormView(LoginView):
     template_name ='login.html'
