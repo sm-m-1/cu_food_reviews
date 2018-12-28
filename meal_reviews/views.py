@@ -60,5 +60,6 @@ class ReviewUpdateView(UpdateView):
     pk_url_kwarg = 'id'
     success_url = reverse_lazy('meal_reviews_list')
     template_name = 'review_update_form.html'
+    # the update view must receive fields or a form class
     # fields = ['rating', 'comment']
     form_class = ReviewForm
