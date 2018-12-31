@@ -4,7 +4,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMultiAlternatives
 from django.core.mail import send_mail
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.template import loader
 from django.template.loader import render_to_string
 from django.urls import reverse
@@ -37,6 +37,11 @@ class AlertsListView(generic.ListView):
         queryset = super().get_queryset().filter(user=self.request.user)
         return queryset
 
+    def get(self, request, *args, **kwargs):
+        if not self.request.user.is_authenticated:
+            return redirect('login')
+        return super().get(request, *args, **kwargs)
+
 
 class ReviewsListView(generic.ListView):
     model = Review
@@ -45,6 +50,11 @@ class ReviewsListView(generic.ListView):
     def get_queryset(self):
         queryset = super().get_queryset().filter(user=self.request.user)
         return queryset
+
+    def get(self, request, *args, **kwargs):
+        if not self.request.user.is_authenticated:
+            return redirect('login')
+        return super().get(request, *args, **kwargs)
 
 
 class SignUpFormView(generic.FormView):
