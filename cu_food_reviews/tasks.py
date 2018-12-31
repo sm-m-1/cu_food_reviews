@@ -3,7 +3,7 @@ from .celery import app
 
 @app.task
 def add(x, y):
-    # print("adding {} and {} together".format(x,y))
+    print("adding {} and {} together".format(x,y))
     return x + y
 
 @app.task

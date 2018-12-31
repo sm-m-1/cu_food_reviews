@@ -1,0 +1,19 @@
+{% autoescape off %}
+  <div>
+    <h2> Hi,</h2>
+    <h3>
+      This alert is for the following item: <br>{{ food_name }} <br>
+      It will be served today: {{ date }}
+    </h3>
+
+    <h4>
+      Sincerely, <br>
+      The Cornell Food Website Team
+    </h4>
+
+    <h6>
+      You can unsubscribe emails for this item by visiting My Alerts section. <br>
+      <a href="{{ unsubscribe_link }}">{{ unsubscribe_link }}</a>
+    </h6>
+  </div>
+{% endautoescape %}
