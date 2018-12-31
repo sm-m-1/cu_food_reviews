@@ -5,6 +5,9 @@
       This alert is for the following item: <br>{{ food_name }} <br>
       It will be served today: {{ date }}
     </h3>
+    <h3>
+      <a href="{{ domain }}{{ locations_link }}"> View Today's Menu</a>
+    </h3>
 
     <h4>
       Sincerely, <br>
@@ -13,7 +16,7 @@
 
     <h6>
       You can unsubscribe emails for this item by visiting My Alerts section. <br>
-      <a href="{{ unsubscribe_link }}">{{ unsubscribe_link }}</a>
+      <a href="{{ domain }}{{ unsubscribe_link }}">{{ domain }}{{ unsubscribe_link }}</a>
     </h6>
   </div>
 {% endautoescape %}
