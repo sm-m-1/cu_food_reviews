@@ -9,6 +9,15 @@ from cu_food_reviews import settings
 from .models import Alert
 
 @app.task
+def celery_send_email(mail_subject, text_content, html_content, from_email, to_email):
+    msg = EmailMultiAlternatives(
+        mail_subject, text_content, from_email, to_email
+    )
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
+
+
+@app.task
 def send_users_alert_email():
     unsubscribe_link = reverse_lazy('meal_items_alert_list')
     locations_link = reverse_lazy('location_list')
@@ -31,15 +40,9 @@ def send_users_alert_email():
             'food_name': food_name,
             'date': date,
         })
-        msg = EmailMultiAlternatives(
-            mail_subject, text_content, settings.DEFAULT_FROM_EMAIL, to_email
+        celery_send_email.delay(
+            mail_subject,
+            text_content, html_content,
+            settings.DEFAULT_FROM_EMAIL,
+            to_email
         )
-        msg.attach_alternative(html_content, "text/html")
-        msg.send()
-    # send_mail(
-    #     mail_subject,
-    #     message,
-    #     settings.DEFAULT_FROM_EMAIL,
-    #     to_email,
-    #     fail_silently=False
-    # )
