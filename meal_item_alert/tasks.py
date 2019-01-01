@@ -23,7 +23,7 @@ def send_users_alert_email():
     locations_link = reverse_lazy('location_list')
     domain = settings.DOMAIN_NAME
     today = datetime.now().date()
-    date = today.isoformat()
+    date = today.strftime("%A, %B %d, %Y")
     text_content = ''
 
     all_alerts = Alert.objects.all()
