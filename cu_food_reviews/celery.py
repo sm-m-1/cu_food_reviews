@@ -3,6 +3,7 @@ import os
 from datetime import timedelta
 
 from celery import Celery
+from celery.schedules import crontab
 from . import settings
 
 SECURE_SSL_REDIRECT = True
@@ -18,25 +19,30 @@ app.conf.update(
     CELERY_TASK_SERIALIZER = 'json',
     CELERY_RESULT_SERIALIZER = 'json',
     broker_url = os.environ.get('CLOUDAMQP_URL', 'pyamqp://guest@localhost//'),
-    # broker_url = os.environ.get('REDIS_URL', 'pyamqp://guest@localhost//'),
     broker_pool_limit = 2, # Will decrease connection usage
-    # broker_heartbeat = None, # We're using TCP keep-alive instead
-    # broker_connection_timeout = 30, # May require a long timeout due to Linux DNS timeouts etc
-    result_backend = 'django-db',  # AMQP is not recommended as result backend as it creates thousands of queues
-    # result_backend='rpc', # AMQP is not recommended as result backend as it creates thousands of queues
-    # result_backend=os.environ['REDIS_URL'], # AMQP is not recommended as result backend as it creates thousands of queues
-    # result_persistent = False,
+    result_backend = 'django-db',
     event_queue_expires = 60, # Will delete all celeryev. queues without consumers after 1 minute.
     worker_prefetch_multiplier = 1, # Disable prefetching, it's causes problems and doesn't help performance
     worker_concurrency = 5,
 
 )
 
+# crontab runs in UTC timezone by default.
 app.conf.beat_schedule = {
     'add-every-30-seconds': {
         'task': 'cu_food_reviews.tasks.add',
         'schedule': timedelta(seconds=30),
         'args': (30,69)
+    },
+    'load_data_from_endpoint_task_every_day': {
+        'task': 'cu_food_reviews.tasks.load_data_from_endpoint_task',
+        'schedule': crontab(hour=6, minute=0), # 1:00 AM EST, daily
+        'args': ()
+    },
+    'send_meal_item_alerts_daily': {
+        'task': 'meal_item_alert.tasks.send_users_alert_email',
+        'schedule': crontab(hour=11, minute=30), # 6:30 AM EST, daily.
+        'args': ()
     },
 }
 
