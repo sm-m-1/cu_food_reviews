@@ -17,18 +17,17 @@
                    checked
                     {% endif %}
                    onchange="this.form.submit()">
-            <label class="m-1" for="open_today"> Open Today</label>
+            <label class="m-1 btn btn-primary" for="open_today">Open</label>
           </div>
           <div class="form-check form-check-inline">
             <input type="radio"
                    name="campus_area_short"
                    id="campus_area_north"
                    value="North"
-                   checked
                    onchange="this.form.submit()"
-                    {#              {% if "North" == request.GET.campus_area_short %}#}
-                    {#             checked#}
-                    {#              {% endif %}#}
+                    {% if "North" == request.GET.campus_area_short %}
+                   checked
+                    {% endif %}
             >
             <label for="campus_area_north" class="btn btn-primary mx-2">North</label><br>
             <input type="radio"
@@ -38,7 +37,8 @@
                    onchange="this.form.submit()"
                     {% if "Central" == request.GET.campus_area_short %}
                    checked
-                    {% endif %}> <label for="campus_area_central" class="btn btn-primary mx-2">Central</label><br>
+                    {% endif %}>
+            <label for="campus_area_central" class="btn btn-primary mx-2">Central</label><br>
             <input type="radio"
                    name="campus_area_short"
                    id="campus_area_west"
@@ -56,8 +56,10 @@
                    onchange="this.form.submit()"
                     {% if "" == request.GET.campus_area_short %}
                    checked
-                    {% endif %}>
-            <label for="campus_area_none" class="btn btn-primary mx-2">All</label><br>
+                    {% endif %}
+            >
+            <label for="campus_area_none" class="btn btn-primary mx-2">All</label>
+            <br>
           </div>
 
           <div class="form-group">
@@ -127,7 +129,7 @@
                       {% endfor %}
 
                     {% else %}
-                      <p class="small_font text-danger">Closed today</p>
+                      <p class="small_font text-danger">Closed</p>
                     {% endif %}
                   </div>
                 </div>
@@ -146,7 +148,8 @@
                       </h4>
                     {% endif %}
                     {% for element in data.meal_category_data %}
-                      <h5>{{ element.category }}</h5>
+                      <div class="mb-3">
+                      <h6 class="text-secondary mb-0">{{ element.category }}</h6>
                       {% for item in element.category_items %}
                         {#                      <li> {{ item.name }}</li>#}
                         <div class="row">
@@ -173,6 +176,7 @@
                           </div>
                         </div>
                       {% endfor %}
+                      </div>
                     {% endfor %}
                     {% if data.meal_category_data %} <hr> {% endif %}
                   </div>
