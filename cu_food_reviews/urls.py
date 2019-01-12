@@ -24,7 +24,7 @@ from django.contrib.auth import views as auth_views
 # auth_views.PasswordResetCompleteView
 # auth_views.PasswordResetDoneView
 
-from locations.views import LocationList
+from locations.views import LocationList, privacy_page
 from meal_items.views import MealItemDetailView
 from accounts.views import (
     LoginFormView,
@@ -53,6 +53,7 @@ urlpatterns = [
     # reviews app
     path('items/create-review/<slug:item_slug>', ReviewFormView.as_view(), name='meal_item_review'),
     path('create-review/success', meal_item_review_success, name='meal_item_review_success'),
+    path('privacy/', privacy_page, name='privacy'),
     path('reviews-list/', ReviewsListView.as_view(), name='meal_reviews_list'),
     path('reviews/<id>/delete', ReviewDeleteView.as_view(), name='review_item_delete'),
     path('reviews/<id>/update', ReviewUpdateView.as_view(), name='review_item_update'),

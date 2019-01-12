@@ -77,7 +77,8 @@ class LocationList(ListView):
         return query
 
 
-
+def privacy_page(request):
+    return render(request, template_name='privacy.html')
 
 
 
