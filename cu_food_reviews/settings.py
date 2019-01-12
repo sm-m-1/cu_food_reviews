@@ -203,7 +203,7 @@ STATICFILES_DIRS = [
     # '/var/www/static/',
 ]
 
-DOMAIN_NAME = 'cornellfood.me'
+DOMAIN_NAME = '.cornellfood.me'
 
 try:
     from .local_settings import *
