@@ -27,7 +27,9 @@ except (KeyError):
     SECRET_KEY = MY_LOCAL_SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
+
+SECURE_SSL_REDIRECT = True
 
 ALLOWED_HOSTS = [
     'localhost',
