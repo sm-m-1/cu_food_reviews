@@ -28,9 +28,12 @@
             <p>
               View and create reviews for meals.
             </p>
-            <p class="text-success">
-              Sign in to create reviews and alerts.
-            </p>
+            {% if not request.user.is_authenticated %}
+              <p class="text-success">
+                <a href="{% url 'login' %}">Sign in</a> to create reviews and alerts.
+              </p>
+
+            {% endif %}
           </div>
         </div>
         <div class="card mx-auto my-1" style="width: 20rem;">
