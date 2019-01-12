@@ -55,7 +55,7 @@ def unique_slug_generator(instance, new_slug=None):
                     randstr=random_string_generator(size=4)
                 )
         return unique_slug_generator(instance, new_slug=new_slug)
-    print("slug: ", slug)
+
     return slug
 
 @receiver(pre_save, sender=MealItem)

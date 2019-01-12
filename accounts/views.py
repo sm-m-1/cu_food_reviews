@@ -154,8 +154,8 @@ class UserActivationView(generic.TemplateView):
             uidb64 = self.request.GET.get('uidb64')
             uid = force_text(urlsafe_base64_decode(uidb64))
             token = self.request.GET.get('token')
-            print("uid: ", uid)
-            print("token: ", token)
+            # print("uid: ", uid)
+            # print("token: ", token)
             user = User.objects.get(id=uid)
         except(TypeError, ValueError, OverflowError, User.DoesNotExist):
             user = None
@@ -195,9 +195,9 @@ class ContactFormView(generic.FormView):
             'user_email': email,
             'user_message': content,
         })
-        print("message: ", message)
+        # print("message: ", message)
         to_email = [settings.CONTACT_TO_EMAIL]
-        print("to_email: ", to_email)
+        # print("to_email: ", to_email)
         send_mail(
             mail_subject,
             message,

@@ -25,7 +25,7 @@ class MealItemDetailView(DetailView):
         context['create_review_url'] = reverse('meal_item_review', kwargs={'item_slug': self.object.slug})
         context['create_alert_url'] = reverse('meal_item_alert', kwargs={'item_slug': self.object.slug})
         context['average_rating'] = Review.objects.filter(meal_item_id=self.object.id).aggregate(Avg('rating')).get('rating__avg')
-        print("context: ", context)
+
         return context
 
 

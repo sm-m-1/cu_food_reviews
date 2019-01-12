@@ -20,13 +20,11 @@ class LocationList(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(object_list=object_list, **kwargs)
-        # print("context: ", context)
         today = datetime.now().date()
         # today = datetime(2018,12,20).date()
         date = self.request.GET.get('date', today.isoformat())
         open_today = self.request.GET.get('open_today')
-        # print("self.kwargs['date']", date)
-        # print("type(date):", type(date))
+
         object_list_old = context['object_list']
         object_list_new = []
         for location in object_list_old:
@@ -37,15 +35,12 @@ class LocationList(ListView):
             }
             meal_events = MealEvent.objects.filter(operating_hour__date=date, operating_hour__location=location)
 
-            if open_today == 'on' and meal_events.exists() == False: continue
+            if open_today == 'on' and meal_events.exists() == False: continue # skip location that is closed today
 
-            print("meal_events: ", meal_events)
             for event in meal_events:
                 meal_categories = MealCategory.objects.filter(meal_event=event)
                 meal_category_data = []
                 for category in meal_categories:
-                    # meal_category_data['category'] = category
-                    # meal_category_data['category_data'] = MealCategory.objects.filter(meal_event=event)
                     data = {
                         'category': category,
                         'category_items': MealItem.objects.filter(
@@ -56,8 +51,6 @@ class LocationList(ListView):
                     }
                     meal_category_data.append(data)
 
-                    # menu_items = MealItem.objects.filter(meal_category__meal_event=event, meal_category=category)
-
                 data = {
                     'event': event,
                     'meal_category_data': meal_category_data
@@ -67,14 +60,9 @@ class LocationList(ListView):
             dining_items = MealItem.objects.filter(meal_location=location, is_dining_item=True).order_by('name')
             info['dining_items'] = dining_items
             object_list_new.append(info)
-            # break
+
         context['object_list'] = object_list_new
-        # print("context: ", context)
-        # temp_start_date = "2018-12-01"
-        # start_date = datetime.strptime(temp_start_date, "%Y-%m-%d").date()
         next_seven_days = [( today + timedelta(days=i) ).isoformat() for i in range(7)]
-        # context['start_date'] = start_date.isoformat()
-        # context['end_date'] = end_date.isoformat()
         context['date_list'] = next_seven_days
         if self.request.user.is_authenticated:
             context['authenticated_user'] = self.request.user.username
@@ -82,31 +70,12 @@ class LocationList(ListView):
 
     def get_queryset(self):
         # queryset of the location model
-        query = super().get_queryset()
-        area_name = self.request.GET.get('campus_area_short', '') # Choosing All as default when nothing is provided
+        query = super().get_queryset().order_by('-eatery_name')
+        area_name = self.request.GET.get('campus_area_short', 'All') # Choosing All as default when nothing is provided
+        if area_name == 'All': return query
         query = query.filter(campus_area_short__icontains=area_name)
-        if area_name: query = query.order_by('-eatery_name')
-        # print("self.request.GET:", self.request.GET)
         return query
 
-
-
-# django rest framework simple view.
-# class LocationsApiView(generics.ListAPIView):
-#     queryset = Location.objects.all()
-#     renderer_classes = (renderers.JSONRenderer,)
-#     serializer_class = LocationListSerializer
-#
-#     def list(self, request, *args, **kwargs):
-#         queryset = self.get_queryset()
-#
-#         serializer = self.get_serializer(queryset, many=True)
-#         return Response(serializer.data)
-#
-#     def get_queryset(self):
-#         date = self.kwargs['date']
-#         print("date:", date)
-#         return super().get_queryset()
 
 
 
