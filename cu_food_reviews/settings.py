@@ -68,7 +68,15 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'django_celery_results',
     'django_celery_beat',
+    'anymail',
 ]
+
+ANYMAIL = {
+    # (exact settings here depend on your ESP...)
+    "MAILGUN_API_KEY": os.environ.get('SENDGRID_API_KEY', ''),
+}
+
+EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
 
 # django allauth settings
 SITE_ID = 1
@@ -100,9 +108,6 @@ ROOT_URLCONF = 'cu_food_reviews.urls'
 
 LOGIN_REDIRECT_URL = 'location_list'
 
-# EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
-# EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
-
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development only
 EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
 try:
@@ -111,7 +116,7 @@ except (KeyError):
     from .local_settings import LOCAL_SENDGRID_API_KEY
     SENDGRID_API_KEY = LOCAL_SENDGRID_API_KEY
 
-DEFAULT_FROM_EMAIL = 'PacoApps-info@pacoapps.com'
+DEFAULT_FROM_EMAIL = 'info@cornellfood.me'
 CONTACT_TO_EMAIL = 'mashthemyth@gmail.com'
 SENDGRID_SANDBOX_MODE_IN_DEBUG = False
 USER_SIGNUP_EMAIL_SUBJECT = 'Activate your Cornell Food account.'
@@ -211,6 +216,7 @@ STATICFILES_DIRS = [
     # '/var/www/static/',
 ]
 
+DOMAIN_NAME = 'example.com'
 
 try:
     from .local_settings import *
