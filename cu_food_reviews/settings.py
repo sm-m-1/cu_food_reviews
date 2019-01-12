@@ -32,6 +32,9 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
+    'cornellfood.me',
+    '.cornellfood.me',
+    '157.230.51.101',
 ]
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 20971520
