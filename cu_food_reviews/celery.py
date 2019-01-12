@@ -41,7 +41,7 @@ app.conf.beat_schedule = {
     },
     'send_meal_item_alerts_daily': {
         'task': 'meal_item_alert.tasks.send_users_alert_email',
-        'schedule': crontab(hour=11, minute=30), # 6:30 AM EST, daily.
+        'schedule': crontab(hour=11, minute=1), # 6:01 AM EST, daily.
         'args': ()
     },
 }

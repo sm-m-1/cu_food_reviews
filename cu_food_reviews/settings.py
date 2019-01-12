@@ -144,21 +144,14 @@ AUTHENTICATION_BACKENDS = (
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get('DATABASE_NAME',''),
+        'USER': os.environ.get('DATABASE_USER', ''),
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD', ''),
+        'HOST': os.environ.get('DATABASE_HOST', ''),
+        'PORT': '',
     }
 }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'postgres',
-#         'USER': 'postgres',
-#         'PASSWORD': '',
-#         'HOST': 'localhost',
-#         'PORT': '5432',
-#     }
-# }
 
 
 # Password validation
@@ -207,7 +200,7 @@ STATICFILES_DIRS = [
     # '/var/www/static/',
 ]
 
-DOMAIN_NAME = 'example.com'
+DOMAIN_NAME = 'cornellfood.me'
 
 try:
     from .local_settings import *
