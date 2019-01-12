@@ -105,12 +105,11 @@ LOGIN_REDIRECT_URL = 'location_list'
 EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
 DEFAULT_FROM_EMAIL = 'info@cornellfood.me'
 CONTACT_TO_EMAIL = 'mashthemyth@gmail.com'
-SENDGRID_SANDBOX_MODE_IN_DEBUG = False
 USER_SIGNUP_EMAIL_SUBJECT = 'Activate your Cornell Food account.'
 
 ANYMAIL = {
     # (exact settings here depend on your ESP...)
-    "MAILGUN_API_KEY": os.environ.get('SENDGRID_API_KEY', ''),
+    "MAILGUN_API_KEY": os.environ.get('MAILGUN_API_KEY', ''),
 }
 
 TEMPLATES = [
