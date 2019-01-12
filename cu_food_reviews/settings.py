@@ -108,14 +108,6 @@ ROOT_URLCONF = 'cu_food_reviews.urls'
 
 LOGIN_REDIRECT_URL = 'location_list'
 
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development only
-EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
-try:
-    SENDGRID_API_KEY = os.environ['SENDGRID_API_KEY']
-except (KeyError):
-    from .local_settings import LOCAL_SENDGRID_API_KEY
-    SENDGRID_API_KEY = LOCAL_SENDGRID_API_KEY
-
 DEFAULT_FROM_EMAIL = 'info@cornellfood.me'
 CONTACT_TO_EMAIL = 'mashthemyth@gmail.com'
 SENDGRID_SANDBOX_MODE_IN_DEBUG = False
