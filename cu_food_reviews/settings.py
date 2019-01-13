@@ -35,7 +35,6 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     'cornellfood.me',
-    '.cornellfood.me',
     '157.230.51.101',
 ]
 
