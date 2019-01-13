@@ -34,6 +34,7 @@ SECURE_SSL_REDIRECT = True
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
+    'www.cornellfood.me',
     'cornellfood.me',
     '157.230.51.101',
 ]
