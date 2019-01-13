@@ -31,7 +31,7 @@ app.conf.update(
 app.conf.beat_schedule = {
     'add-every-30-seconds': {
         'task': 'cu_food_reviews.tasks.add',
-        'schedule': timedelta(seconds=30),
+        'schedule': timedelta(minutes=30),
         'args': (30,69)
     },
     'load_data_from_endpoint_task_every_day': {
