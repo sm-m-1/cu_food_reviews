@@ -108,7 +108,7 @@ LOGIN_REDIRECT_URL = 'location_list'
 
 # Email things.
 EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
-DEFAULT_FROM_EMAIL = 'info@cornellfood.me'
+DEFAULT_FROM_EMAIL = 'Cornell Food Alert <info@cornellfood.me>'
 CONTACT_TO_EMAIL = 'mashthemyth@gmail.com'
 USER_SIGNUP_EMAIL_SUBJECT = 'Activate your Cornell Food account.'
 
