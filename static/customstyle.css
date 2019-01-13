@@ -36,5 +36,8 @@ select {
     #home_scroll_spy {
       display: none;
     }
+    .menu_item_stars {
+      display: none;
+    }
 
 }
