@@ -9,9 +9,6 @@ from operating_hours.models import OperatingHour
 from meal_events.models import MealEvent
 from meal_items.models import MealItem
 from datetime import datetime, timedelta, date
-from django.utils import timezone
-from rest_framework.views import APIView
-from rest_framework import routers, serializers, viewsets, generics, renderers
 
 
 class LocationList(ListView):
@@ -75,6 +72,8 @@ class LocationList(ListView):
         if area_name == 'All': return query
         query = query.filter(campus_area_short__icontains=area_name)
         return query
+
+
 
 
 def privacy_page(request):

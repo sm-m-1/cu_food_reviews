@@ -93,6 +93,7 @@ SOCIALACCOUNT_PROVIDERS = {
 # django allauth settings end
 
 MIDDLEWARE = [
+    'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -100,11 +101,23 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
 ]
 
-ROOT_URLCONF = 'cu_food_reviews.urls'
+CACHE_MIDDLEWARE_SECONDS = 60 * 60
 
-LOGIN_REDIRECT_URL = 'location_list'
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
+
+ROOT_URLCONF = 'cu_food_reviews.urls'
 
 # Email things.
 EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
@@ -116,6 +129,7 @@ ANYMAIL = {
     # (exact settings here depend on your ESP...)
     "MAILGUN_API_KEY": os.environ.get('MAILGUN_API_KEY', ''),
 }
+
 
 TEMPLATES = [
     {
