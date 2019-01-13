@@ -1,15 +1,9 @@
-from django.http import HttpResponse, HttpResponseForbidden
-from django.core.exceptions import PermissionDenied
-from django.shortcuts import render
-from django.urls import reverse
-from django.views import View
-from django.views.generic import DetailView, FormView
-from django.views.generic.detail import SingleObjectMixin
-
-from .models import MealItem
-from meal_reviews.models import Review
-from meal_reviews.forms import ReviewForm
 from django.db.models import Avg
+from django.urls import reverse
+from django.views.generic import DetailView
+
+from meal_reviews.models import Review
+from .models import MealItem
 
 
 class MealItemDetailView(DetailView):

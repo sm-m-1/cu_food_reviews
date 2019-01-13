@@ -1,15 +1,13 @@
-from django.core.management.base import BaseCommand, CommandError
-
-from django.core.management.base import BaseCommand, CommandError
 import json
 import urllib.request
 
+from django.core.management.base import BaseCommand
+
 from locations.models import Location
-from meal_events.models import MealEvent
 from meal_categories.models import MealCategory
+from meal_events.models import MealEvent
 from meal_items.models import MealItem
 from operating_hours.models import OperatingHour
-
 
 API_ENDPOINT_URL = "https://now.dining.cornell.edu/api/1.0/dining/eateries.json"
 

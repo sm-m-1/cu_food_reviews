@@ -1,12 +1,12 @@
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
-from django.views.generic import DetailView, FormView, DeleteView, UpdateView
+from django.views.generic import FormView, DeleteView, UpdateView
 from django.views.generic.detail import SingleObjectMixin
 
-from .models import MealItem, user_has_not_reviewed_item
-from meal_reviews.models import Review
 from meal_reviews.forms import ReviewForm
+from meal_reviews.models import Review
+from .models import MealItem, user_has_not_reviewed_item
 
 
 class ReviewFormView(SingleObjectMixin, FormView):

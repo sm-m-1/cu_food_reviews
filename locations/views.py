@@ -1,17 +1,12 @@
+from datetime import datetime, timedelta
+
 from django.shortcuts import render
 from django.views.generic import ListView
-from rest_framework.response import Response
 
 from locations.models import Location
-from locations.serializers import LocationListSerializer
 from meal_categories.models import MealCategory
-from operating_hours.models import OperatingHour
 from meal_events.models import MealEvent
 from meal_items.models import MealItem
-from datetime import datetime, timedelta, date
-from django.utils import timezone
-from rest_framework.views import APIView
-from rest_framework import routers, serializers, viewsets, generics, renderers
 
 
 class LocationList(ListView):
