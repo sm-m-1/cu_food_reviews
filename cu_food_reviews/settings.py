@@ -42,6 +42,7 @@ ALLOWED_HOSTS = [
 DATA_UPLOAD_MAX_MEMORY_SIZE = 20971520
 
 LOGIN_REDIRECT_URL = 'location_list'
+LOGOUT_REDIRECT_URL = 'home'
 
 # Application definition
 
@@ -103,8 +104,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'cu_food_reviews.urls'
-
-LOGIN_REDIRECT_URL = 'location_list'
 
 # Email things.
 EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"

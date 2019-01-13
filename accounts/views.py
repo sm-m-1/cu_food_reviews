@@ -142,7 +142,6 @@ class LoginFormView(LoginView):
         return context
 
 class LogoutFormView(LogoutView):
-    next_page = 'login'
     template_name = 'logout.html'
 
 
