@@ -33,7 +33,7 @@
             </p>
             {% if not request.user.is_authenticated %}
               <p class="text-success">
-                <a href="{% url 'login' %}">Sign in</a> to create reviews and alerts.
+                <a href="/accounts/google/login/">Sign in</a> to create reviews and alerts.
               </p>
 
             {% endif %}
