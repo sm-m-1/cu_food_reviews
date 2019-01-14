@@ -75,6 +75,7 @@ INSTALLED_APPS = [
     'django_celery_results',
     'django_celery_beat',
     'anymail',
+    'debug_toolbar',
 ]
 
 # django allauth settings

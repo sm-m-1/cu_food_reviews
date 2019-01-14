@@ -23,7 +23,7 @@ from django.contrib.auth import views as auth_views
 # auth_views.PasswordResetConfirmView
 # auth_views.PasswordResetCompleteView
 # auth_views.PasswordResetDoneView
-
+from cu_food_reviews import settings
 from locations.views import LocationList, privacy_page
 from meal_items.views import MealItemDetailView
 from accounts.views import (
@@ -69,3 +69,13 @@ urlpatterns = [
     path('logout/', LogoutFormView.as_view(), name='logout'),
     path('login/', GoogleLoginView.as_view(), name='login')
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        path('__debug__/', include(debug_toolbar.urls)),
+
+        # For django versions before 2.0:
+        # url(r'^__debug__/', include(debug_toolbar.urls)),
+
+    ] + urlpatterns

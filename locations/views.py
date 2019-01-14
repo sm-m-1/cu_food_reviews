@@ -22,28 +22,35 @@ class LocationList(ListView):
 
         object_list_old = context['object_list']
         object_list_new = []
-        for location in object_list_old:
+
+        locations = context['object_list']
+        events = MealEvent.objects.all().prefetch_related('operating_hour', 'operating_hour__location')
+        categories = MealCategory.objects.all().prefetch_related('meal_event')
+        # items = MealItem.objects.filter(meal_category__meal_event__in=events, meal_category__in=categories,
+        #                                 meal_location__in=locations).order_by('name')
+        items = MealItem.objects.all().prefetch_related('meal_category', 'meal_category__meal_event','meal_location')
+
+        for location in locations:
             info = {
                 'location': location,
                 'location_data': [],
                 'dining_items': [],
             }
-            meal_events = MealEvent.objects.filter(operating_hour__date=date, operating_hour__location=location)
-
-            if open_today == 'on' and meal_events.exists() == False: continue # skip location that is closed today
+            meal_events = [ event for event in events if event.operating_hour.location==location ]
+            if open_today == 'on' and len(meal_events) == 0: continue  # skip location that is closed today
 
             for event in meal_events:
-                meal_categories = MealCategory.objects.filter(meal_event=event)
+                meal_categories = [ category for category in categories if category.meal_event == event ]
                 meal_category_data = []
                 for category in meal_categories:
                     data = {
                         'category': category,
-                        'category_items': MealItem.objects.filter(
-                            meal_category__meal_event=event,
-                            meal_category=category,
-                            meal_location=location
-                        ).order_by('name')
+                        'category_items': []
                     }
+                    for meal_item in items:
+
+                        data['category_items'].append(meal_item)
+
                     meal_category_data.append(data)
 
                 data = {
@@ -52,15 +59,53 @@ class LocationList(ListView):
                 }
                 info['location_data'].append(data)
 
-            dining_items = MealItem.objects.filter(meal_location=location, is_dining_item=True).order_by('name')
-            info['dining_items'] = dining_items
+                dining_items = []
+                for meal_item in items:
+                    if meal_item.meal_location == location and meal_item.is_dining_item == True:
+                        dining_items.append(meal_item)
+                info['dining_items'] = dining_items
+
             object_list_new.append(info)
+
+
+        # for location in object_list_old:
+        #     info = {
+        #         'location': location,
+        #         'location_data': [],
+        #         'dining_items': [],
+        #     }
+        #     meal_events = MealEvent.objects.filter(operating_hour__date=date, operating_hour__location=location)
+        #
+        #     if open_today == 'on' and meal_events.exists() == False: continue # skip location that is closed today
+        #
+        #     for event in meal_events:
+        #         meal_categories = MealCategory.objects.filter(meal_event=event)
+        #         meal_category_data = []
+        #         for category in meal_categories:
+        #             data = {
+        #                 'category': category,
+        #                 'category_items': MealItem.objects.filter(
+        #                     meal_category__meal_event=event,
+        #                     meal_category=category,
+        #                     meal_location=location
+        #                 ).order_by('name')
+        #             }
+        #             meal_category_data.append(data)
+        #
+        #         data = {
+        #             'event': event,
+        #             'meal_category_data': meal_category_data
+        #         }
+        #         info['location_data'].append(data)
+        #
+        #     dining_items = MealItem.objects.filter(meal_location=location, is_dining_item=True).order_by('name')
+        #     info['dining_items'] = dining_items
+        #     object_list_new.append(info)
 
         context['object_list'] = object_list_new
         next_seven_days = [( today + timedelta(days=i) ).isoformat() for i in range(7)]
         context['date_list'] = next_seven_days
-        if self.request.user.is_authenticated:
-            context['authenticated_user'] = self.request.user.username
+
         return context
 
     def get_queryset(self):
