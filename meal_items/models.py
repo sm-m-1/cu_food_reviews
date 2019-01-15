@@ -30,12 +30,6 @@ class MealItem(models.Model):
         # return "/products/{slug}/".format(slug=self.slug)
         return reverse("meal_item", kwargs={"item_slug": self.slug})
 
-    def get_average_rating(self):
-        return self.review_set.aggregate(Avg('rating')).get('rating__avg')
-
-    def get_rating_count(self):
-        return self.review_set.count()
-
 
 def random_string_generator(size=10, chars=string.ascii_lowercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
