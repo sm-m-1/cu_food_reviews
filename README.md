@@ -26,8 +26,7 @@ in the Django database.
 The ['/locations'](locations/views.py) view endpoint required the most work.   
 
 
-In this view I de-structure the saved Models  
-from the Django database given a date and a campus region.  
+In this view I de-structure the saved Models from the Django database given a date and a campus region.  
 
 The data structure looks like this before passing it to the template for rendering:  
 
