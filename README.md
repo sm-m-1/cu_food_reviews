@@ -23,8 +23,8 @@ https://now.dining.cornell.edu/eateries
 The menu data is consumed from the Cornell Dining API as is and similar models are created  
 in the Django database.
 
-The '/locations' view endpoint required the most work.   
-[a link](locations/views.py)
+The ['/locations'](locations/views.py) view endpoint required the most work.   
+
 
 In this view I de-structure the saved Models  
 from the Django database given a date and a campus region.  
