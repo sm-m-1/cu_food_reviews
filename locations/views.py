@@ -21,10 +21,10 @@ class LocationList(ListView):
 
         object_list_new = []
 
-        locations = self.get_queryset().prefetch_related('operatinghour_set', 'operatinghour_set__mealevent_set')
-        events = MealEvent.objects.filter(operating_hour__date=today).select_related('operating_hour', 'operating_hour__location')
-        categories = MealCategory.objects.all().select_related('meal_event')
-        items = MealItem.objects.all(
+        location_qs = self.get_queryset().prefetch_related('operatinghour_set', 'operatinghour_set__mealevent_set')
+        event_qs = MealEvent.objects.filter(operating_hour__date=today).select_related('operating_hour', 'operating_hour__location')
+        category_qs = MealCategory.objects.all().select_related('meal_event')
+        item_qs = MealItem.objects.all(
         ).order_by('name').prefetch_related(
             'meal_category',
             'meal_category__meal_event',
@@ -36,25 +36,25 @@ class LocationList(ListView):
             avg_rating=Avg('review__rating')
         )
 
-        for location in locations:
+        for location in location_qs:
             info = {
                 'location': location,
                 'location_data': [],
                 'dining_items': [],
             }
-            meal_events = [ event for event in events if event.operating_hour.location == location ]
+            meal_events = [ event for event in event_qs if event.operating_hour.location == location ]
 
             if open_today == 'on' and len(meal_events) == 0: continue  # skip location that is closed today
 
             for event in meal_events:
-                meal_categories = [ category for category in categories if category.meal_event == event ]
+                meal_categories = [ category for category in category_qs if category.meal_event == event ]
                 meal_category_data = []
                 for category in meal_categories:
                     data = {
                         'category': category,
                         'category_items': []
                     }
-                    for meal_item in items:
+                    for meal_item in item_qs:
                         category_qs = meal_item.meal_category.all()
                         if meal_item.meal_location == location:
                             for c in category_qs:
@@ -71,7 +71,7 @@ class LocationList(ListView):
                 info['location_data'].append(data)
 
                 dining_items = []
-                for meal_item in items:
+                for meal_item in item_qs:
                     if meal_item.meal_location == location and meal_item.is_dining_item == True:
                         dining_items.append(meal_item)
                 info['dining_items'] = dining_items
@@ -83,6 +83,8 @@ class LocationList(ListView):
         context['date_list'] = next_seven_days
 
         return context
+
+
 
     def get_queryset(self):
         # queryset of the location model
