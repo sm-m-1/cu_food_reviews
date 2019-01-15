@@ -27,10 +27,17 @@ class LocationList(ListView):
         locations = self.get_queryset().prefetch_related('operatinghour_set', 'operatinghour_set__mealevent_set')
         events = MealEvent.objects.filter(operating_hour__date=date).select_related('operating_hour', 'operating_hour__location')
         categories = MealCategory.objects.all().select_related('meal_event')
-        items = MealItem.objects.all().order_by('name').prefetch_related(
-            'meal_category', 'meal_category__meal_event','meal_location', 'review_set'
+        items = MealItem.objects.all(
+        ).order_by('name').prefetch_related(
+            'meal_category',
+            'meal_category__meal_event',
+            'review_set'
+        ).select_related(
+            'meal_location',
+        ).annotate(
+            rating_count=Count('review'),
+            avg_rating=Avg('review__rating')
         )
-        items = items.annotate(rating_count=Count('review'), avg_rating=Avg('review__rating'))
 
         # events = MealEvent.objects.filter(operating_hour__date=date)
         # categories = MealCategory.objects.all()
