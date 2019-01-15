@@ -20,3 +20,92 @@ This is the Cornell menu website that is built from from the API. It only allows
 you to view menu items.  
 https://now.dining.cornell.edu/eateries
 
+The menu data is consumed from the Cornell Dining API as is and similar models are created  
+in the Django database.
+
+The '/locations' view endpoint required the most work.  
+The data_structure looks like this before passing it to the template for rendering:
+
+data = [
+  {
+    'location': location1,
+    'location_data': [
+      {
+        'event': Lunch,
+        'meal_category_data': [
+            {
+              'category': Soup Station,
+              'category_items': [
+                  vegetable soup, chicken soup, ......
+              ]
+            },
+          	{
+              'category': Salad Bar Station,
+              'category_items': [
+                  Salad1, Salad2, ......
+              ]
+            },
+         ]
+      },
+      {
+        'event': Diner,
+        'meal_category_data': [
+            {
+              'category': Soup Station,
+              'category_items': [
+                  vegetable soup, chicken soup, ......
+              ]
+            },
+            {
+              'category': Salad Bar Station,
+              'category_items': [
+                  Salad1, Salad2, ......
+              ]
+            },
+         ]
+      },
+      .....
+    ]
+  },
+  {
+    'location': location2,
+    'location_data': [
+      {
+        'event': Lunch,
+        'meal_category_data': [
+            {
+              'category': Soup Station,
+              'category_items': [
+                  vegetable soup, chicken soup, ......
+              ]
+            },
+            {
+              'category': Salad Bar Station,
+              'category_items': [
+                  Salad1, Salad2, ......
+              ]
+            },
+         ]
+      },
+      {
+        'event': Diner,
+        'meal_category_data': [
+            {
+              'category': Soup Station,
+              'category_items': [
+                  vegetable soup, chicken soup, ......
+              ]
+            },
+            {
+              'category': Salad Bar Station,
+              'category_items': [
+                  Salad1, Salad2, ......
+              ]
+            },
+         ]
+      },
+      .....
+    ]
+  },
+  .....
+]
