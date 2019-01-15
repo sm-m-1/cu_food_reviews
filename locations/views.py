@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-
+from django.db.models import Prefetch
 from django.shortcuts import render
 from django.views.generic import ListView
 
@@ -23,12 +23,14 @@ class LocationList(ListView):
         object_list_old = context['object_list']
         object_list_new = []
 
-        locations = context['object_list']
-        events = MealEvent.objects.all().prefetch_related('operating_hour', 'operating_hour__location')
+        locations = self.get_queryset().prefetch_related('operatinghour_set', 'operatinghour_set__mealevent_set')
+        events = MealEvent.objects.filter(operating_hour__date=date).select_related('operating_hour', 'operating_hour__location')
         categories = MealCategory.objects.all().prefetch_related('meal_event')
-        # items = MealItem.objects.filter(meal_category__meal_event__in=events, meal_category__in=categories,
-        #                                 meal_location__in=locations).order_by('name')
-        items = MealItem.objects.all().prefetch_related('meal_category', 'meal_category__meal_event','meal_location')
+        items = MealItem.objects.all().order_by('name').prefetch_related('meal_category', 'meal_category__meal_event','meal_location', 'review_set')
+        #
+        # events = MealEvent.objects.filter(operating_hour__date=date)
+        # categories = MealCategory.objects.all()
+        # items = MealItem.objects.all()
 
         for location in locations:
             info = {
@@ -36,20 +38,28 @@ class LocationList(ListView):
                 'location_data': [],
                 'dining_items': [],
             }
-            meal_events = [ event for event in events if event.operating_hour.location==location ]
+            # meal_events = location.operatinghour_set.all()
+            # meal_events = events.filter(operating_hour__location=location)
+            meal_events = []
+            for event in events:
+                if event.operating_hour.location == location:
+                    meal_events.append(event)
+
             if open_today == 'on' and len(meal_events) == 0: continue  # skip location that is closed today
 
             for event in meal_events:
+                # meal_categories = [ category for category in categories if category.meal_event == event ]
                 meal_categories = [ category for category in categories if category.meal_event == event ]
                 meal_category_data = []
                 for category in meal_categories:
                     data = {
                         'category': category,
+                        # 'category_items': items.filter(meal_category=category, meal_location=location, meal_category__meal_event=event)
                         'category_items': []
                     }
                     for meal_item in items:
-
-                        data['category_items'].append(meal_item)
+                        if meal_item.meal_category == category and meal_item.meal_location == location and meal_item.meal_category.meal_event == event:
+                            data['category_items'].append(meal_item)
 
                     meal_category_data.append(data)
 
@@ -59,6 +69,7 @@ class LocationList(ListView):
                 }
                 info['location_data'].append(data)
 
+                # dining_items = items.filter(meal_location=location, is_dining_item=True)
                 dining_items = []
                 for meal_item in items:
                     if meal_item.meal_location == location and meal_item.is_dining_item == True:
