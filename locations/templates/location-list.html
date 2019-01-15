@@ -160,12 +160,12 @@
                               <div class="form-inline">
                                 <input name="input-3"
                                        data-size="xs"
-                                       value="{{ item.get_average_rating }}"
+                                       value="{{ item.avg_rating }}"
                                        class="rating-loading user-review-star"
                                        type="button"
                                 >
                                 <a href="{{ item.get_absolute_url }}">
-                                  ( {{ item.get_rating_count }} )
+                                  ( {{ item.rating_count }} )
                                 </a>
                               </div>
                             </div>
@@ -193,12 +193,12 @@
                           <div class="form-inline">
                             <input name="input-3"
                                    data-size="xs"
-                                   value="{{ item.get_average_rating }}"
+                                   value="{{ item.avg_rating }}"
                                    class="rating-loading user-review-star"
                                    type="button"
                             >
                             <a href="{{ item.get_absolute_url }}">
-                              ( {{ item.get_rating_count }} )
+                              ( {{ item.rating_count }} )
                             </a>
                           </div>
                         </div>
