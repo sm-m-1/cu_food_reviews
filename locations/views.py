@@ -58,8 +58,14 @@ class LocationList(ListView):
                         'category_items': []
                     }
                     for meal_item in items:
-                        if meal_item.meal_category == category and meal_item.meal_location == location and meal_item.meal_category.meal_event == event:
-                            data['category_items'].append(meal_item)
+                        category_qs = meal_item.meal_category.all()
+                        if meal_item.meal_location == location:
+                            for c in category_qs:
+                                if c.meal_event == event and c == category:
+                                    data['category_items'].append(meal_item)
+                                    break
+                        # if meal_item.meal_category == category and meal_item.meal_location == location and meal_item.meal_category.meal_event == event:
+                        #     data['category_items'].append(meal_item)
 
                     meal_category_data.append(data)
 
