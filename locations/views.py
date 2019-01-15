@@ -3,6 +3,7 @@ from django.db.models import Avg
 from django.db.models import Count
 from django.shortcuts import render
 from django.views.generic import ListView
+from django.core.cache import cache
 
 from locations.models import Location
 from meal_categories.models import MealCategory
@@ -18,7 +19,11 @@ class LocationList(ListView):
         context = super().get_context_data(object_list=object_list, **kwargs)
         today = self.request.GET.get('date', date.today().isoformat())
         open_today = self.request.GET.get('open_today')
-
+        location_data_cache = cache.get(self.request.get_full_path())
+        if location_data_cache:
+            context['object_list'] = location_data_cache
+            context['date_list'] = [( date.today() + timedelta(days=i) ).isoformat() for i in range(7)]
+            return context
 
         location_qs = self.get_queryset().prefetch_related('operatinghour_set', 'operatinghour_set__mealevent_set')
         event_qs = MealEvent.objects.filter(operating_hour__date=today).select_related('operating_hour', 'operating_hour__location')
@@ -82,7 +87,7 @@ class LocationList(ListView):
         context['object_list'] = object_list_new
         next_seven_days = [( date.today() + timedelta(days=i) ).isoformat() for i in range(7)]
         context['date_list'] = next_seven_days
-
+        cache.set(self.request.get_full_path(), object_list_new, 300) # 5 minute cache
         return context
 
 
