@@ -12,7 +12,9 @@ django-allauth==0.38.0
 django-anymail==5.0
 django-celery-beat==1.4.0
 django-celery-results==1.0.4
+django-debug-toolbar==1.11
 django-extensions==2.1.2
+django-redis==4.10.0
 django-timezone-field==3.0
 django-widget-tweaks==1.4.3
 djangorestframework==3.8.2
@@ -39,10 +41,12 @@ python-dateutil==2.7.5
 python-http-client==3.1.0
 python3-openid==3.1.0
 pytz==2018.5
+redis==3.0.1
 requests==2.21.0
 requests-oauthlib==1.0.0
 simplegeneric==0.8.1
 six==1.11.0
+sqlparse==0.2.4
 traitlets==4.3.2
 urllib3==1.24.1
 vine==1.1.4
