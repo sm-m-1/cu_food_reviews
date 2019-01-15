@@ -24,7 +24,7 @@ The menu data is consumed from the Cornell Dining API as is and similar models a
 in the Django database.
 
 The '/locations' view endpoint required the most work.  
-The data_structure looks like this before passing it to the template for rendering:  
+The data structure looks like this before passing it to the template for rendering:  
 
 ```
 data = [
