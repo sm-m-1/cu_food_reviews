@@ -15,7 +15,7 @@ class Review(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return "{} at {}".format(self.meal_item.name, str(self.meal_item.meal_location)[:20])
+        return "{} at {}".format(self.meal_item.name, str(self.meal_item.meal_location)[:27])
 
     def get_delete_url(self):
         return reverse("review_item_delete", kwargs={"id": self.id})
