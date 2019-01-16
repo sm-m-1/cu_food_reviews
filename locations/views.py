@@ -65,6 +65,7 @@ class LocationList(ListView):
         }
         # choose the meal events for this location.
         meal_events = [event for event in event_qs if event.operating_hour.location == location]
+        meal_events.sort(key=lambda x: x.start_timestamp)
 
         if open_today == 'on' and len(meal_events) == 0: return None  # skip location that is closed today
 
