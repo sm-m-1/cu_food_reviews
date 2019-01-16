@@ -25,81 +25,55 @@ class LocationList(ListView):
             context['date_list'] = [( date.today() + timedelta(days=i) ).isoformat() for i in range(7)]
             return context
 
-        location_qs = self.get_queryset().prefetch_related('operatinghour_set', 'operatinghour_set__mealevent_set')
-        event_qs = MealEvent.objects.filter(operating_hour__date=today).select_related('operating_hour', 'operating_hour__location')
-        category_qs = MealCategory.objects.all().select_related('meal_event')
-        item_qs = MealItem.objects.all(
-        ).order_by('name').prefetch_related(
-            'meal_category',
-            'meal_category__meal_event',
-            'review_set'
-        ).select_related(
-            'meal_location',
-        ).annotate(
-            rating_count=Count('review'),
-            avg_rating=Avg('review__rating')
-        )
-
+        object_list_old = context['object_list']
         object_list_new = []
-        for location in location_qs:
-            # build the location info
-            location_info = self.build_location_data(location, event_qs, category_qs, item_qs, open_today)
-            if location_info: object_list_new.append(location_info)
+        for location in object_list_old: # build the location data
+            info = {
+                'location': location,
+                'location_data': [],
+                'dining_items': [],
+            }
+            meal_events = MealEvent.objects.filter( # choose the meal events for this location.
+                operating_hour__date=today, operating_hour__location=location
+            ).order_by('start_timestamp')
+
+            if open_today == 'on' and meal_events.exists() == False: continue  # skip location that is closed today
+
+            for event in meal_events: # build the location meal events data
+                meal_categories = MealCategory.objects.filter(meal_event=event)
+                meal_category_data = []
+                for category in meal_categories: # build the location meal category data
+                    data = {
+                        'category': category,
+                        'category_items': MealItem.objects.filter( # build the location meal items data for the category.
+                            meal_category__meal_event=event,
+                            meal_category=category,
+                            meal_location=location
+                        ).order_by('name').annotate(
+                            rating_count=Count('review'),
+                            avg_rating=Avg('review__rating')
+                        )
+                    }
+                    meal_category_data.append(data) # save the location meal items data.
+
+                data = {
+                    'event': event,
+                    'meal_category_data': meal_category_data
+                }
+                info['location_data'].append(data) # save the location meal category data
+
+            dining_items = MealItem.objects.filter( # build the extra dining items for the location
+                meal_location=location, is_dining_item=True).order_by('name').annotate(
+                rating_count=Count('review'),
+                avg_rating=Avg('review__rating')
+            )
+            info['dining_items'] = dining_items
+            object_list_new.append(info) # save the full location data to the object_list
 
         context['object_list'] = object_list_new
-        next_seven_days = [( date.today() + timedelta(days=i) ).isoformat() for i in range(7)]
-        context['date_list'] = next_seven_days
+        context['date_list'] = [( date.today() + timedelta(days=i) ).isoformat() for i in range(7)]
         cache.set(self.request.get_full_path(), object_list_new, 600) # 10 minute cache
         return context
-
-
-    def build_location_data(self, location, event_qs=None, category_qs=None, item_qs=None, open_today='on'):
-        """
-        Given a location, this method builds the location info for it.
-        :return: A list
-        """
-        info = {
-            'location': location,
-            'location_data': [],
-            'dining_items': [],
-        }
-        # choose the meal events for this location.
-        meal_events = [event for event in event_qs if event.operating_hour.location == location]
-        meal_events.sort(key=lambda x: x.start_timestamp)
-
-        if open_today == 'on' and len(meal_events) == 0: return None  # skip location that is closed today
-
-        for event in meal_events:  # build the location meal events data
-            meal_categories = [category for category in category_qs if category.meal_event == event]
-            meal_category_data = []
-            for category in meal_categories:  # build the location meal category data
-                data = {
-                    'category': category,
-                    'category_items': []
-                }
-                for meal_item in item_qs:  # build the location meal items data for the category.
-                    meal_item_category_qs = meal_item.meal_category.all()
-                    if meal_item.meal_location == location:
-                        for c in meal_item_category_qs:
-                            if c.meal_event == event and c == category:
-                                data['category_items'].append(meal_item)
-                                break
-
-                meal_category_data.append(data)  # save the location meal items data.
-
-            data = {
-                'event': event,
-                'meal_category_data': meal_category_data
-            }
-            info['location_data'].append(data)  # save the location meal category data
-
-            dining_items = []
-            for meal_item in item_qs:  # build the extra dining items for the location
-                if meal_item.meal_location == location and meal_item.is_dining_item == True:
-                    dining_items.append(meal_item)
-            info['dining_items'] = dining_items
-
-        return info
 
 
 
