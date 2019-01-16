@@ -41,7 +41,7 @@ ALLOWED_HOSTS = [
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 20971520
 
-LOGIN_REDIRECT_URL = 'location_list'
+LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
 # Application definition
