@@ -82,7 +82,7 @@
   <div class="row">
     <div id="home_scroll_spy" class="col-md-4 mt-2">
       <div class="sticky-top">
-        <div id="" class="list-group">
+        <div id="" class="list-group pre-scrollable" style="max-height: 610px;">
           {% for object in object_list %}
             <a class="list-group-item list-group-item-action" id="scroll_spy_padding" href="#{{ object.location.slug }}"> {{ object.location.eatery_name }}</a>
           {% endfor %}
