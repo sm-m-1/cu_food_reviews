@@ -160,7 +160,7 @@
                               <div class="form-inline">
                                 <input name="input-3"
                                        data-size="xs"
-                                       value="{{ item.avg_rating }}"
+                                       value="{% if item.rating_count != 0 %}{{ item.avg_rating }}{% endif %}"
                                        class="rating-loading user-review-star"
                                        type="button"
                                 >
