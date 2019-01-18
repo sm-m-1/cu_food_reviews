@@ -79,7 +79,7 @@ class LocationList(ListView):
 
     def get_queryset(self):
         # queryset of the location model
-        query = super().get_queryset().order_by('-eatery_name')
+        query = super().get_queryset().order_by('eatery_name')
         area_name = self.request.GET.get('campus_area_short', 'All') # Choosing All as default when nothing is provided
         if area_name == 'All': return query
         query = query.filter(campus_area_short__icontains=area_name)
