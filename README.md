@@ -1,5 +1,7 @@
 # This is a web application built with the data from Cornell Dining.
 
+A short description about the project is given below.
+
 Users can view the menu list for all Cornell locations for the next 7 days. 
 
 Users can view and write reviews for menu items. 
@@ -19,6 +21,10 @@ https://now.dining.cornell.edu/api/1.0/dining/eateries.json
 This is the Cornell menu website that is built from from the API. It only allows 
 you to view menu items.  
 https://now.dining.cornell.edu/eateries
+
+But the https://www.cornellfood.me/ website has two extra features:
+1. You can create reviews for foods.
+2. You can set up email notifications for your favorite foods.
 
 The menu data is consumed from the Cornell Dining API as is and similar models are created  
 in the Django database.

@@ -82,7 +82,7 @@
   <div class="row">
     <div id="home_scroll_spy" class="col-md-4 mt-2">
       <div class="sticky-top">
-        <div id="" class="list-group">
+        <div id="" class="list-group pre-scrollable" style="max-height: 610px;">
           {% for object in object_list %}
             <a class="list-group-item list-group-item-action" id="scroll_spy_padding" href="#{{ object.location.slug }}"> {{ object.location.eatery_name }}</a>
           {% endfor %}
@@ -160,7 +160,7 @@
                               <div class="form-inline">
                                 <input name="input-3"
                                        data-size="xs"
-                                       value="{{ item.avg_rating }}"
+                                       value="{% if item.rating_count != 0 %}{{ item.avg_rating }}{% endif %}"
                                        class="rating-loading user-review-star"
                                        type="button"
                                 >
@@ -179,7 +179,7 @@
                 {% endfor %}
                 <div class="">
                   {% if object.dining_items %}
-                    <h5> Extra: </h5>
+                    <h5> Featuring: </h5>
                   {% endif %}
                   {% for item in object.dining_items %}
                     <div class="row">
@@ -193,7 +193,7 @@
                           <div class="form-inline">
                             <input name="input-3"
                                    data-size="xs"
-                                   value="{{ item.avg_rating }}"
+                                   value="{% if item.rating_count != 0 %}{{ item.avg_rating }}{% endif %}"
                                    class="rating-loading user-review-star"
                                    type="button"
                             >
