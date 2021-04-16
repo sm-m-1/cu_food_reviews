@@ -12,7 +12,7 @@ django-allauth==0.38.0
 django-anymail==5.0
 django-celery-beat==1.4.0
 django-celery-results==1.0.4
-django-debug-toolbar==1.11
+django-debug-toolbar==1.11.1
 django-extensions==2.1.2
 django-redis==4.10.0
 django-timezone-field==3.0
